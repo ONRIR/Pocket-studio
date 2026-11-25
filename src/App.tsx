@@ -150,9 +150,9 @@ function Editor({ fileId, content, lang, fontSize, taRef, onEdit, onCursor, onKe
     const rafRef = useRef(0);
 
     const applyTransform = useCallback((top: number, left: number, startLine: number) => {
-        const y = PAD_TOP + startLine * lineHeight - top;
+        const y = startLine * lineHeight - top;
         if (codeInnerRef.current) codeInnerRef.current.style.transform = 'translate(' + (-left) + 'px,' + y + 'px)';
-        if (gutterInnerRef.current) gutterInnerRef.current.style.transform = 'translateY(' + y + 'px)';
+        if (gutterInnerRef.current) gutterInnerRef.current.style.transform = 'translateY(' + (PAD_TOP + y) + 'px)';
     }, [lineHeight]);
 
     const start = Math.max(0, Math.floor(scroll.top / lineHeight) - OVERSCAN);
@@ -191,16 +191,11 @@ function Editor({ fileId, content, lang, fontSize, taRef, onEdit, onCursor, onKe
     lines.forEach((toks: Tok[], li: number) => {
         const lineNo = start + li;
         const spans: React.ReactNode[] = [];
-        let merged = '';
-        const flushPlain = () => { if (merged) { spans.push(merged); merged = ''; } };
         toks.forEach((tok) => {
-            if (!tok.c) { merged += tok.t; return; }
-            flushPlain();
             key += 1;
-            spans.push(<span key={key} className={tok.c}>{tok.t}</span>);
+            spans.push(<span key={key} className={tok.c || undefined}>{tok.t}</span>);
         });
-        flushPlain();
-        codeNodes.push(<div key={lineNo} style={{ height: lineHeight, lineHeight: lineHeight + 'px' }}>{spans}{'\u200b' === '' ? '' : null}</div>);
+        codeNodes.push(<div key={lineNo} style={{ height: lineHeight, lineHeight: lineHeight + 'px' }}>{spans.length ? spans : '\u200b'}</div>);
     });
 
     const reportCursor = () => {

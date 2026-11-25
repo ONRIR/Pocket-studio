@@ -5,6 +5,8 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
+    min-height: 560px;
     background: #1e1e1e;
     color: #d4d4d4;
     font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, 'Courier New', monospace;
@@ -148,6 +150,9 @@
 }
 
 .ps-highlight-inner { will-change: transform; }
+
+/* Keep every token an isolated bidi run so mixed Arabic/Latin code stays in logical LTR order */
+.ps-highlight span { unicode-bidi: isolate; }
 
 .ps-input {
     position: absolute;
