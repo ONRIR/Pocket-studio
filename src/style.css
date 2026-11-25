@@ -1,0 +1,428 @@
+/* Pocket Studio - phone-first code editor. Page-level rules only; ps- prefix. */
+
+.ps-app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: ui-monospace, 'Cascadia Code', Menlo, Consolas, 'Courier New', monospace;
+    overflow: hidden;
+    direction: rtl;
+}
+
+.ps-topbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 48px;
+    padding: 0 8px;
+    background: #252526;
+    border-bottom: 1px solid #3c3c3c;
+    flex: none;
+}
+
+.ps-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #9cdcfe;
+    white-space: nowrap;
+}
+
+.ps-filename {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 13px;
+    color: #cccccc;
+    background: none;
+    border: none;
+    padding: 8px 4px;
+}
+
+.ps-status {
+    font-size: 11px;
+    color: #858585;
+    white-space: nowrap;
+}
+
+.ps-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 0 10px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #cccccc;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.ps-btn:active { background: #3c3c3c; }
+
+.ps-btn-run {
+    background: #0e639c;
+    color: #fff;
+    font-weight: 600;
+}
+
+.ps-btn-run:active { background: #1177bb; }
+
+/* Editor */
+
+.ps-editorwrap {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    direction: ltr;
+    background: #1e1e1e;
+}
+
+.ps-gutter {
+    flex: none;
+    width: 44px;
+    background: #1e1e1e;
+    border-right: 1px solid #2d2d2d;
+    overflow: hidden;
+    position: relative;
+}
+
+.ps-gutter-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    will-change: transform;
+}
+
+.ps-gutter-line {
+    text-align: right;
+    padding-right: 8px;
+    color: #858585;
+    font-size: 12px;
+    user-select: none;
+}
+
+.ps-gutter-line.ps-cur { color: #c6c6c6; }
+
+.ps-codearea {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.ps-highlight, .ps-input {
+    margin: 0;
+    border: none;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    tab-size: 2;
+    font-variant-ligatures: none;
+    font-feature-settings: normal;
+    letter-spacing: 0;
+    white-space: pre;
+    overflow-wrap: normal;
+    word-break: normal;
+}
+
+.ps-highlight {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    color: #d4d4d4;
+    background: transparent;
+    pointer-events: none;
+}
+
+.ps-highlight-inner { will-change: transform; }
+
+.ps-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    resize: none;
+    background: transparent;
+    color: transparent;
+    caret-color: #aeafad;
+    outline: none;
+    overflow: auto;
+    -webkit-text-fill-color: transparent;
+}
+
+.ps-input::selection { background: rgba(38, 79, 120, 0.6); }
+
+/* Syntax colors (VS Code Dark+) */
+.tok-kw { color: #569cd6; }
+.tok-str { color: #ce9178; }
+.tok-num { color: #b5cea8; }
+.tok-com { color: #6a9955; }
+.tok-attr { color: #9cdcfe; }
+.tok-sel { color: #d7ba7d; }
+.tok-punc { color: #808080; }
+.tok-h { color: #569cd6; font-weight: 600; }
+
+/* Symbol bar */
+
+.ps-symbols {
+    flex: none;
+    display: flex;
+    gap: 4px;
+    padding: 6px 8px;
+    background: #252526;
+    border-top: 1px solid #3c3c3c;
+    overflow-x: auto;
+    direction: ltr;
+    -webkit-overflow-scrolling: touch;
+}
+
+.ps-sym {
+    flex: none;
+    min-width: 38px;
+    height: 38px;
+    padding: 0 8px;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    background: #2d2d2d;
+    color: #d4d4d4;
+    font-size: 15px;
+    font-family: inherit;
+}
+
+.ps-sym:active { background: #0e639c; color: #fff; }
+
+.ps-sym.ps-snip {
+    font-size: 12px;
+    color: #9cdcfe;
+    min-width: 0;
+}
+
+/* Drawer */
+
+.ps-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 20;
+}
+
+.ps-drawer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 82%;
+    max-width: 320px;
+    background: #252526;
+    border-left: 1px solid #3c3c3c;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+}
+
+.ps-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid #3c3c3c;
+    font-size: 14px;
+    font-weight: 600;
+    color: #cccccc;
+}
+
+.ps-filelist { flex: 1; overflow-y: auto; }
+
+.ps-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #2d2d2d;
+    color: #cccccc;
+    font-size: 14px;
+    font-family: inherit;
+    text-align: right;
+    cursor: pointer;
+}
+
+.ps-file.ps-open { background: #37373d; }
+
+.ps-file-badge {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    background: #3c3c3c;
+    color: #9cdcfe;
+}
+
+.ps-file-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.ps-iconbtn {
+    flex: none;
+    min-width: 36px;
+    min-height: 36px;
+    border: none;
+    background: none;
+    color: #858585;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.ps-iconbtn:active { color: #fff; }
+
+.ps-newfile {
+    display: flex;
+    gap: 6px;
+    padding: 10px 12px;
+    border-top: 1px solid #3c3c3c;
+}
+
+.ps-newfile input, .ps-rename input, .ps-findbar input {
+    flex: 1;
+    min-width: 0;
+    background: #1e1e1e;
+    border: 1px solid #3c3c3c;
+    border-radius: 6px;
+    color: #d4d4d4;
+    font-size: 14px;
+    font-family: inherit;
+    padding: 8px 10px;
+    direction: ltr;
+}
+
+.ps-meter {
+    padding: 8px 12px;
+    font-size: 11px;
+    color: #858585;
+    border-top: 1px solid #3c3c3c;
+}
+
+.ps-meter-bar { height: 4px; background: #3c3c3c; border-radius: 2px; margin-top: 4px; }
+
+.ps-meter-fill { height: 100%; border-radius: 2px; background: #73a89a; }
+
+.ps-meter-fill.ps-full { background: #ed313e; }
+
+/* Bottom panel */
+
+.ps-panel {
+    flex: none;
+    height: 42%;
+    min-height: 160px;
+    background: #181818;
+    border-top: 1px solid #3c3c3c;
+    display: flex;
+    flex-direction: column;
+}
+
+.ps-panel-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-bottom: 1px solid #2d2d2d;
+    font-size: 12px;
+    color: #858585;
+}
+
+.ps-panel-body {
+    flex: 1;
+    overflow: auto;
+    padding: 8px 12px;
+    direction: ltr;
+    font-size: 13px;
+}
+
+.ps-log { margin: 0 0 4px; white-space: pre-wrap; word-break: break-word; }
+.ps-log-err { color: #f48771; }
+.ps-log-warn { color: #d7ba7d; }
+.ps-log-res { color: #73a89a; }
+.ps-log-info { color: #858585; }
+
+.ps-preview-host { flex: 1; overflow: auto; background: #fff; direction: ltr; }
+
+/* Find bar + menu */
+
+.ps-findbar {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    background: #252526;
+    border-top: 1px solid #3c3c3c;
+    direction: ltr;
+}
+
+.ps-findrow { display: flex; gap: 6px; align-items: center; }
+
+.ps-menu {
+    position: absolute;
+    top: 52px;
+    left: 8px;
+    z-index: 40;
+    background: #252526;
+    border: 1px solid #3c3c3c;
+    border-radius: 10px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 210px;
+}
+
+.ps-menu-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    font-size: 13px;
+    color: #cccccc;
+}
+
+.ps-menu-row .ps-btn { min-height: 34px; min-width: 34px; }
+
+.ps-toast {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0e639c;
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    z-index: 50;
+    white-space: nowrap;
+}
+
+.ps-toast.ps-err { background: #ed313e; }
+
+@media (min-width: 768px) {
+    .ps-drawer { width: 300px; }
+    .ps-title { font-size: 14px; }
+}
