@@ -6,7 +6,8 @@ import androidx.appcompat.app.AlertDialog
 
 /** Launcher icons of this fork: activity-alias name and the label shown in the picker. */
 internal val ICON_CHOICES = listOf(
-    "IconBlack" to "Black (default)",
+    "IconBlack" to "Logo on black (default)",
+    "IconGlow" to "Black with glow",
     "IconWhite" to "White",
     "IconBlue" to "Blue glow",
     "IconGreen" to "Green-blue",
