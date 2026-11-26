@@ -29,6 +29,10 @@ import kotlinx.coroutines.withContext
 import androidx.core.content.edit
 import androidx.core.net.toUri
 
+private const val POCKET_AI_NOTICE =
+    "Pocket Studio: modified from VSCodroid (MIT License, Copyright (c) 2026 Yudhi Armyndharis and " +
+        "VSCodroid Community, github.com/rmyndharis/VSCodroid). Modifications made with AI."
+
 /**
  * Shows the About dialog. Called from AndroidBridge via JS.
  */
@@ -59,12 +63,10 @@ fun MainActivity.showAboutDialog() {
     showWithReachableButtons(
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.about_title))
-            .setMessage(getString(R.string.about_body, version, disclaimer))
+            .setMessage(getString(R.string.about_body, version, disclaimer) + "\n\n" + POCKET_AI_NOTICE)
             .setPositiveButton(getString(R.string.dialog_ok), null)
             .setNeutralButton(getString(R.string.about_licenses)) { _, _ -> showLicensesDialog() }
-            .setNegativeButton(getString(R.string.about_privacy_policy)) { _, _ ->
-                openInBrowser("https://rmyndharis.github.io/VSCodroid/privacy-policy.html")
-            }
+            .setNegativeButton("Change app icon") { _, _ -> showIconPickerDialog() }
     )
 }
 

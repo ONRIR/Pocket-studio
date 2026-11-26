@@ -1,3 +1,11 @@
+# Pocket Studio
+
+**Modified from [VSCodroid](https://github.com/rmyndharis/VSCodroid) (MIT). Modifications made with AI.**
+
+This repository is a fork of VSCodroid by Yudhi Armyndharis and the VSCodroid Community, used under the MIT License (see `LICENSE`, kept unchanged, and `NOTICE.md`). The changes in this fork (new app id and name, icons with an in-app icon switcher, touch text selection with handles, triple tap, two-finger context menu) were written with AI and have not had a full review. Everything else is upstream's work. Not affiliated with or endorsed by Microsoft or the VSCodroid project.
+
+---
+
 <p align="center">
   <img src="docs/logo/vscodroid.png" alt="VSCodroid Logo" width="150">
 </p>
