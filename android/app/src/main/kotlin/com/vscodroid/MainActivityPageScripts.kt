@@ -63,6 +63,8 @@ internal fun MainActivity.injectBridgeToken() {
         injectTouchContextMenu()
         // Lets a finger drag the caret
         injectCaretDrag()
+        // Long-press selection with handles, triple tap, two-finger menu
+        injectTouchSelection()
         // Keeps an inline list edit (New File, Rename) in view when the keyboard rises
         injectListEditKeeper()
         // Makes Enter on the soft keyboard commit an inline edit or a Quick Open pick,
