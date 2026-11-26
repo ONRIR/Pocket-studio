@@ -1,0 +1,386 @@
+package com.vscodroid.util
+
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
+import java.io.ByteArrayInputStream
+import java.io.File
+import java.io.IOException
+import java.security.MessageDigest
+
+/**
+ * The attribution documents have to reach the device, and the pieces that make
+ * that happen sit in three files that nothing else holds together.
+ *
+ * `app/build.gradle.kts` names the repository paths to copy. [Notices.BUNDLED]
+ * names the asset basenames to open. `MainActivity.showLicensesDialog` opens
+ * them. Rename `docs/LEGAL_NOTICES.md`, or drop a line from the task's document
+ * list, and the build stays green, the APK still installs, and the licences
+ * dialog quietly comes up half empty on a device. There is no compiler
+ * relationship between the three, which is what this test supplies. Nor is
+ * there one behind the buttons that open those dialogs, so the calls are held
+ * here as well: a document nothing on screen reaches is packaged and
+ * undelivered.
+ *
+ * It supplies it only because the build script is declared an input to the test
+ * task. These tests read `build.gradle.kts` through the file system, which Gradle
+ * cannot see: before that declaration existed, editing the build script left the
+ * task UP-TO-DATE and every mutation to it passed. The `inputs.file` line in
+ * `tasks.withType<Test>` is what makes the assertions below reachable, and
+ * deleting it makes them silent rather than wrong.
+ *
+ * The stake is not cosmetic. The GPL requires its written offer of source to
+ * accompany the binary, and this screen is the only place it does. It requires a
+ * copy of the licence itself as well, which is what `licenses/COPYING.*` are, so
+ * those are checked here too and are checked for more: a document that has been
+ * truncated or reflowed is no longer the licence it is offered as.
+ */
+class NoticesTest {
+
+    // Unit tests run with app/ as the working directory.
+    private val repoRoot = File("../..")
+    private val buildScript = File("build.gradle.kts")
+    private val mainActivity = File("src/main/kotlin/com/vscodroid/MainActivityDialogs.kt")
+
+    /** The body of BundleNoticesTask, ended on a closing brace in the first column. */
+    private fun taskClassBody(): String {
+        val body = buildScript.readText().substringAfter("class BundleNoticesTask : DefaultTask() {", "")
+        assertFalse(body.isEmpty(), "BundleNoticesTask is gone from build.gradle.kts")
+        return body.substringBefore("\n}")
+    }
+
+    /** The body of androidComponents { ... }, ended on a closing brace in the first column. */
+    private fun androidComponentsBody(): String {
+        val body = buildScript.readText().substringAfter("\nandroidComponents {", "")
+        assertFalse(body.isEmpty(), "androidComponents block is gone from build.gradle.kts")
+        return body.substringBefore("\n}")
+    }
+
+    /**
+     * The entries of `val noticeDocuments = listOf(...)`.
+     *
+     * Each entry is anchored to the start of a line, with only whitespace
+     * allowed in front. `build.gradle.kts` is Kotlin, so `//` disables a line
+     * here exactly as it does anywhere else, and a substring search reads a
+     * commented-out entry as a document the build copies. Every entry begins
+     * its own line, so the anchor costs nothing.
+     */
+    private fun copiedPaths(): List<String> {
+        val list = Regex("""(?m)^\s*val noticeDocuments = listOf\(([^)]*)\)""")
+            .find(buildScript.readText())?.groupValues?.get(1)
+        assertNotNull(list, "build.gradle.kts no longer lists its documents as `val noticeDocuments = listOf(...)`")
+        return Regex("""(?m)^\s*"([^"]+)",?\s*$""")
+            .findAll(list!!).map { it.groupValues[1] }.toList()
+    }
+
+    @Test
+    fun `every bundled name is a document the build actually copies`() {
+        val copied = copiedPaths()
+        assertEquals(
+            (Notices.BUNDLED + Notices.LICENSE_TEXTS.values).sorted(),
+            copied.map { File(it).name }.sorted(),
+            "Notices.BUNDLED / Notices.LICENSE_TEXTS and noticeDocuments disagree about " +
+                "which documents ship. The app opens assets by basename; the task " +
+                "decides which basenames exist."
+        )
+        for (path in copied) {
+            val source = File(repoRoot, path)
+            assertTrue(source.isFile, "bundleNotices copies $path, which does not exist")
+            assertTrue(source.length() > 0, "$path is empty")
+        }
+    }
+
+    @Test
+    fun `what the copy writes is packaged, and something makes the copy run`() {
+        val taskBody = taskClassBody()
+        val wiringBody = androidComponentsBody()
+        val anchored = """(?m)^\s*[^/\n]*"""
+
+        // The Variant API wires BundleNoticesTask into each variant's generated
+        // assets source directories, carrying both the packaging path and the
+        // automatic task dependency for asset merges and lint without legacy
+        // sourceSets provider opt-outs.
+        assertTrue(
+            Regex(anchored + """tasks\.register<BundleNoticesTask>\(""").containsMatchIn(wiringBody),
+            "androidComponents does not register BundleNoticesTask per variant."
+        )
+        assertTrue(
+            Regex(anchored + """documentPaths\.set\(\s*documents\s*\)""").containsMatchIn(wiringBody) &&
+                Regex(anchored + """val documents = noticeDocuments\b""").containsMatchIn(wiringBody),
+            "BundleNoticesTask is not wired to `noticeDocuments`, so what this test " +
+                "checks is not what the APK carries."
+        )
+        assertTrue(
+            Regex(anchored + """variant\.sources\.assets\?\.addGeneratedSourceDirectory\(""")
+                .containsMatchIn(wiringBody) &&
+                Regex(anchored + """BundleNoticesTask::outputDir""").containsMatchIn(wiringBody),
+            "androidComponents does not register BundleNoticesTask::outputDir via " +
+                "variant.sources.assets?.addGeneratedSourceDirectory(...). The documents " +
+                "would be copied and never packaged or depended on."
+        )
+
+        // And it has to clear out what it no longer writes. A plain copy leaves
+        // the last run's files where they are: with a document renamed or
+        // removed, the old one stayed in that directory and went into the next
+        // incremental APK under a name the repository no longer had.
+        assertTrue(
+            Regex(anchored + """fsOps\.sync\s*\{""").containsMatchIn(taskBody),
+            "BundleNoticesTask does not use fsOps.sync, so a document removed or " +
+                "renamed stays in the notices directory and ships from an incremental build."
+        )
+        assertTrue(
+            Regex(anchored + """from\(\s*expected\s*\)""").containsMatchIn(taskBody) &&
+                Regex(anchored + """into\(\s*outputDir\s*\)""").containsMatchIn(taskBody),
+            "BundleNoticesTask's fsOps.sync does not sync `expected` into `outputDir`."
+        )
+    }
+
+    @Test
+    fun `a document that is missing fails the copy rather than shortening it`() {
+        // FileSystemOperations.sync skips a from() that does not exist without a
+        // word, so a checkout with a licence text moved aside would reach a signed
+        // AAB with every packaging gate green. The guard has to run in the task
+        // action before fsOps.sync and throw GradleException on any missing file.
+        val body = taskClassBody()
+        val actionMatch = Regex("""(?m)^\s*@TaskAction\b""").find(body)
+        assertNotNull(actionMatch, "BundleNoticesTask has no @TaskAction")
+        val action = body.substring(actionMatch!!.range.first)
+        val anchored = """(?m)^\s*[^/\n]*"""
+        assertTrue(
+            Regex(anchored + """expected\.filterNot\s*\{\s*it\.isFile\s*}""").containsMatchIn(action),
+            "BundleNoticesTask does not test each expected document with isFile, so " +
+                "a missing one is not what it refuses"
+        )
+        assertTrue(
+            Regex(anchored + """throw GradleException\(""").containsMatchIn(action),
+            "BundleNoticesTask throws nothing, so a missing document is reported " +
+                "at most as a log line and the build stays green"
+        )
+    }
+
+    @Test
+    fun `the written offer of source is among what reaches the device`() {
+        // The one clause that is a legal obligation rather than a courtesy.
+        // Bundling the attribution table alone would look like compliance and
+        // discharge nothing, so the heading is asserted rather than assumed from
+        // the file being present.
+        val offer = copiedPaths().map { File(repoRoot, it) }
+            .filter { it.isFile }
+            .any { it.readText().contains("## GPL Source Code Availability") }
+        assertTrue(
+            offer,
+            "No bundled document carries the '## GPL Source Code Availability' " +
+                "section. The GPL binaries in this APK would ship with no written offer."
+        )
+    }
+
+    @Test
+    fun `every step of the route to these documents is still taken`() {
+        // Packaging a document is not offering it. About opens the notices, the
+        // notices open the licence texts, and each step is a private method with
+        // one caller: drop the button that calls it and the APK still carries all
+        // five documents, every assertion here still passes, and nothing on a
+        // device can reach any of them. Little else notices. Both methods stay
+        // compiled and their own KDoc keeps naming them. Lint fails only the
+        // About dialog's Licenses button taken out whole, whose label is then an
+        // unused string. The License Texts label also titles the dialog it opens,
+        // so removing that button passes lint, as does a call dropped from behind
+        // a label that stays.
+        //
+        // Reading the source is what is available: the activity binds a service
+        // and builds a WebView on the way to these dialogs, so there is no seam
+        // to reach them through. It cannot see a caller that is itself
+        // unreachable, or a button whose label stops saying what it opens.
+        check(mainActivity.isFile) {
+            "MainActivity.kt not found at ${mainActivity.absolutePath}, so this " +
+                "test would pass by looking at nothing"
+        }
+        val code = mainActivity.readLines().filterNot {
+            val trimmed = it.trimStart()
+            trimmed.startsWith("//") || trimmed.startsWith("*") || trimmed.startsWith("/*")
+        }
+        for (dialog in listOf("showLicensesDialog", "showLicenseTextsDialog")) {
+            assertTrue(
+                code.any { it.contains("$dialog()") && !it.contains("fun MainActivity.$dialog(") },
+                "Nothing calls $dialog(), so what it shows is packaged and out of " +
+                    "reach: the same state as when these documents lived only in " +
+                    "the repository, at more cost."
+            )
+        }
+    }
+
+    /**
+     * What each licence text has to still be: the name the chooser offers it
+     * under, the version line it opens with, the line it ends on, and the sha256
+     * of every byte.
+     *
+     * The hash is the whole check on the contents; the version and last lines are
+     * there so a failure says which file and which defect rather than "two hex
+     * strings differ". A truncation loses the last line, a file swapped for
+     * another loses the version line, and either way the app would be handing out
+     * something that is not the licence it claims to be.
+     *
+     * The name is a check on something else, and it needs one: these are keyed by
+     * file, so swapping which name opens which file leaves every hash here
+     * satisfied and still puts the wrong licence in front of the reader.
+     *
+     * Three of the four are the FSF texts as shipped in Termux's liblzma
+     * package, which this APK redistributes; LGPL-3.0 is the FSF publication,
+     * because no Termux package in the base APK carries a copy of it. Re-derive with:
+     *   shasum -a 256 licenses/COPYING.*
+     */
+    private data class Verbatim(
+        val title: String,
+        val version: String,
+        val lastLine: String,
+        val sha256: String
+    )
+
+    private val licenseTexts = mapOf(
+        "COPYING.GPLv2" to Verbatim(
+            "GNU General Public License v2.0",
+            "Version 2, June 1991",
+            "Public License instead of this License.",
+            "edaef632cbb643e4e7a221717a6c441a4c1a7c918e6e4d56debc3d8739b233f6"
+        ),
+        "COPYING.GPLv3" to Verbatim(
+            "GNU General Public License v3.0",
+            "Version 3, 29 June 2007",
+            "<https://www.gnu.org/licenses/why-not-lgpl.html>.",
+            "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986"
+        ),
+        "COPYING.LGPLv2.1" to Verbatim(
+            "GNU Lesser General Public License v2.1",
+            "Version 2.1, February 1999",
+            "That's all there is to it!",
+            "20e50fe7aae3e56378ebf0417d9de904f55a0e61e4df315333e632a4d3555d95"
+        ),
+        // GMP is LGPL-3.0 and ships in the Ruby toolchain pack, which has no
+        // licence screen of its own, so this dialog is the only route to it on a
+        // device that installed Ruby. The libzmq inside the base APK's zeromq
+        // addon is LGPL-3.0 too, with an exception relieving section 4 and its
+        // own copy beside it. The FSF publication at
+        // https://www.gnu.org/licenses/lgpl-3.0.txt, byte for byte.
+        "COPYING.LGPLv3" to Verbatim(
+            "GNU Lesser General Public License v3.0",
+            "Version 3, 29 June 2007",
+            "Library.",
+            "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118"
+        )
+    )
+
+    @Test
+    fun `every licence text the app offers opens under the name it is offered as`() {
+        // Two defects, one assertion. A fourth text could be added to the chooser
+        // and ship unchecked, which is the state this whole file exists to end.
+        // And the chooser is a list of names: whoever taps one is told which
+        // licence they are about to be handed, so a name pointing at the other
+        // file hands over the wrong licence while every pin below still passes,
+        // since those are keyed by the file. GPL-2.0 and GPL-3.0 differ on
+        // patents, on tivoization and on how a violation is cured, so which of
+        // the two a recipient is given is the whole of the question.
+        assertEquals(
+            licenseTexts.entries.associate { (asset, pinned) -> pinned.title to asset },
+            Notices.LICENSE_TEXTS.toMap(),
+            "Notices.LICENSE_TEXTS offers a text with no verbatim check here, " +
+                "pins one the app no longer offers, or opens a text under a name " +
+                "that belongs to another licence."
+        )
+
+        // And the name has to be the version the text opens with, or both halves
+        // of a pin could be swapped together and stay green. The FSF writes
+        // "Version 2" where a name in SPDX shape writes v2.0.
+        for (pinned in licenseTexts.values) {
+            val numbered = pinned.title.substringAfterLast(" v").removeSuffix(".0")
+            assertTrue(
+                pinned.version.startsWith("Version $numbered,"),
+                "'${pinned.title}' is pinned to a text opening '${pinned.version}'"
+            )
+        }
+    }
+
+    @Test
+    fun `each licence text is the whole licence, byte for byte`() {
+        // The obligation the source offer does not discharge. GPL-2.0 section 1,
+        // GPL-3.0 section 4, LGPL-2.1 section 1 and LGPL-3.0 section 4 each
+        // require a copy of the licence to reach whoever receives the binary,
+        // and an edited or half-copied licence is not a copy of it.
+        val copied = copiedPaths().associateBy { File(it).name }
+        for ((asset, expected) in licenseTexts) {
+            val path = copied[asset]
+            assertNotNull(path, "bundleNotices copies no $asset, so the APK carries no such text")
+            val file = File(repoRoot, path!!)
+            assertTrue(file.isFile, "$path does not exist")
+
+            val bytes = file.readBytes()
+            val text = String(bytes, Charsets.UTF_8)
+            assertTrue(
+                text.lineSequence().take(3).any { it.contains(expected.version) },
+                "$path does not open with '${expected.version}'. It is not the licence " +
+                    "its name claims."
+            )
+            assertEquals(
+                expected.lastLine,
+                text.trimEnd().lines().last().trim(),
+                "$path does not end where the licence ends. A truncated licence text " +
+                    "satisfies nothing."
+            )
+
+            val digest = MessageDigest.getInstance("SHA-256").digest(bytes)
+            assertEquals(
+                expected.sha256,
+                digest.joinToString("") { "%02x".format(it) },
+                "$path is no longer byte-for-byte the licence text. Reflowing, " +
+                    "re-wrapping or 'tidying' one is a modification, and a modified " +
+                    "licence is not the licence."
+            )
+        }
+    }
+
+    @Test
+    fun `read returns every document, in order`() {
+        val text = Notices.read { name -> ByteArrayInputStream("body of $name".toByteArray()) }
+        var cursor = -1
+        for (name in Notices.BUNDLED) {
+            val at = text.indexOf("body of $name")
+            assertTrue(at > cursor, "$name is missing from the joined text, or out of order")
+            cursor = at
+        }
+    }
+
+    @Test
+    fun `a licence text that cannot be read is named, not shown empty`() {
+        // The chooser opens one text at a time and has no other reader, so an
+        // empty view is the failure mode: it reads as a build that ships no
+        // licence rather than one whose asset would not open.
+        val asset = Notices.LICENSE_TEXTS.values.first()
+        assertEquals(
+            Notices.missingMarker(asset),
+            Notices.readOne(asset) { throw IOException("not packaged") },
+            "An unreadable licence text came back as something other than a marker"
+        )
+        assertEquals(
+            "the licence",
+            Notices.readOne(asset) { ByteArrayInputStream("the licence".toByteArray()) },
+            "A readable licence text did not come back whole"
+        )
+    }
+
+    @Test
+    fun `a document that cannot be read is named, not dropped`() {
+        val missing = Notices.BUNDLED.last()
+        val text = Notices.read { name ->
+            if (name == missing) throw IOException("not packaged")
+            ByteArrayInputStream("body of $name".toByteArray())
+        }
+        // Named on screen rather than swallowed: a silently shortened notices
+        // screen reads exactly like a complete one.
+        assertTrue(
+            text.contains(Notices.missingMarker(missing)),
+            "An unreadable document vanished from the notices text instead of saying so"
+        )
+        assertTrue(text.contains("body of ${Notices.BUNDLED.first()}"), "The readable document was lost too")
+    }
+}

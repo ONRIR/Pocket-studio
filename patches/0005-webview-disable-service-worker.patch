@@ -1,0 +1,52 @@
+Disable the webview service worker and pin the patched inline script by SHA-256.
+
+A webview runs in a cross-origin iframe. Android's WebView will let a
+ServiceWorkerClient intercept the worker script, but activation never completes
+there: controllerchange does not fire, workerReady never resolves, and the
+webview stays blank indefinitely. Resources are served through
+shouldInterceptRequest on the Kotlin side instead, so the worker has nothing to
+do here even when it does start.
+
+The CSP update matches the patched script digest without relaxing script-src to
+'unsafe-inline'. Nothing under build/ recomputes this hash (the packaged
+pre/index.html is copied verbatim from source), so script-src pins the exact
+base64(sha256(utf8(scriptBody))) digest of the patched inline <script>:
+'sha256-el/TS/5fBUMnU8ReiHF6R2lXHp9nt5L5kVHHNXSr188='. scripts/verify-server-tree.py recomputes the inline script
+digest and rejects either 'unsafe-inline' or any hash drift.
+
+The explanatory comment sits outside the <meta> element. An earlier revision put
+it between the tag name and its attributes, which breaks the element: the browser
+stops parsing it as a tag and renders content="default-src 'none'; ..." as
+visible text at the top of every webview, with no CSP applied at all.
+
+diff --git a/src/vs/workbench/contrib/webview/browser/pre/index.html b/src/vs/workbench/contrib/webview/browser/pre/index.html
+index 42c7c01a..3e5be9a2 100644
+--- a/src/vs/workbench/contrib/webview/browser/pre/index.html
++++ b/src/vs/workbench/contrib/webview/browser/pre/index.html
+@@ -4,8 +4,11 @@
+ <head>
+ 	<meta charset="UTF-8">
+ 
++	<!-- script-src pins the patched inline script below by its exact SHA-256 digest
++	     because nothing in the build recomputes this value. Keep this comment
++	     outside <meta> so the browser still parses the policy element. -->
+ 	<meta http-equiv="Content-Security-Policy"
+-		content="default-src 'none'; script-src 'sha256-FFQoOVVa2tOE3uqUvirwaMNT20TZmrHcL2aaOjJ8BUo=' 'self'; frame-src 'self'; style-src 'unsafe-inline';">
++		content="default-src 'none'; script-src 'sha256-el/TS/5fBUMnU8ReiHF6R2lXHp9nt5L5kVHHNXSr188=' 'self'; frame-src 'self'; style-src 'unsafe-inline';">
+ 
+ 	<!-- Disable pinch zooming -->
+ 	<meta name="viewport"
+@@ -33,7 +36,12 @@
+ 		const ID = searchParams.get('id');
+ 		const webviewOrigin = searchParams.get('origin');
+ 		const onElectron = searchParams.get('platform') === 'electron';
+-		const disableServiceWorker = searchParams.has('disableServiceWorker');
++		// Always disabled on Android. The WebView will let its ServiceWorkerClient
++		// intercept the worker script, but activation never completes in the
++		// cross-origin iframe a webview runs in: controllerchange does not fire, so
++		// workerReady never resolves and the webview stays blank forever. Resources
++		// are served through shouldInterceptRequest on the Kotlin side instead.
++		const disableServiceWorker = true;
+ 		const expectedWorkerVersion = parseInt(searchParams.get('swVersion'));
+ 
+ 		/**
