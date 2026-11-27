@@ -183,7 +183,7 @@ object CrashReporter {
         val sb = StringBuilder()
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z", Locale.US)
 
-        sb.appendLine("=== Pocket Studio Bug Report ===")
+        sb.appendLine("=== VSCandro Bug Report ===")
         sb.appendLine("Generated: ${dateFormat.format(Date())}")
         sb.appendLine()
 

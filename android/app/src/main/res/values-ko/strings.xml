@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pocket Studio</string>
-    <string name="notification_channel_name">Pocket Studio 서버</string>
+    <string name="app_name">VSCandro</string>
+    <string name="notification_channel_name">VSCandro 서버</string>
     <string name="notification_channel_description">로컬 개발 서버를 계속 실행합니다</string>
-    <string name="notification_title">Pocket Studio 실행 중</string>
+    <string name="notification_title">VSCandro 실행 중</string>
     <!-- The card the service puts up while first-run setup unpacks. Its own pair
          rather than the server's, because no server is running yet and the whole
          point of the hold is that the process survives a user who leaves. -->
-    <string name="notification_title_setup">Pocket Studio 준비 중</string>
+    <string name="notification_title_setup">VSCandro 준비 중</string>
     <string name="notification_text_setup">편집기와 도구의 압축을 푸는 중입니다. 몇 분 정도 걸립니다.</string>
     <string name="notification_text">로컬 개발 서버 실행 중</string>
     <!-- There was a second line here, shown when the server was adopted rather
@@ -25,7 +25,7 @@
     <!-- Shown once the automatic restart budget is spent. Replaces the two
          strings above in the same notification, which then carries no Stop
          action because there is nothing left to stop. -->
-    <string name="notification_title_stopped">Pocket Studio 서버가 중지됨</string>
+    <string name="notification_title_stopped">VSCandro 서버가 중지됨</string>
     <string name="notification_text_stopped">서버가 반복해서 충돌했습니다. 앱을 다시 시작하세요.</string>
     <string name="extracting_message">핵심 파일 추출 중\u2026</string>
 
@@ -70,7 +70,7 @@
          about to become reachable again, and a user who is not told which
          setting to look for has nothing to search on. -->
     <string name="heap_override_suspended">반복된 충돌로 settings.json의 사용자 지정 메모리 제한이 해제되었습니다. 다른 값을 시도하려면 vscodroid.server.heapCeilingMb를 변경하고 앱을 다시 시작하세요.</string>
-    <string name="notice_editor_away_from_home">다른 앱이 %1$d번 포트를 사용 중이어서 설정과 로그인 정보를 불러오지 못했습니다. 데이터는 안전합니다. 그 앱을 종료한 뒤 서버 중지를 누르고(또는 알림에서 Pocket Studio를 중지하고) 다시 여세요.</string>
+    <string name="notice_editor_away_from_home">다른 앱이 %1$d번 포트를 사용 중이어서 설정과 로그인 정보를 불러오지 못했습니다. 데이터는 안전합니다. 그 앱을 종료한 뒤 서버 중지를 누르고(또는 알림에서 VSCandro를 중지하고) 다시 여세요.</string>
     <!-- The figure is passed in rather than written here, and it is the
          SHORTFALL the refusal measured, not the size of the unpack: this asks
          the user to free it, and what they have to free is what the device is
@@ -151,11 +151,11 @@
     <string name="server_starting">서버 시작 중…</string>
     <!-- Shown on the page, with the reload control, once the editor's renderer
          has died several times in a minute and the app stops reopening it. -->
-    <string name="error_renderer_crash_loop">편집기가 연속해서 여러 번 예기치 않게 종료되어 Pocket Studio가 다시 열지 않습니다. 파일과 서버는 그대로입니다. 다른 앱을 먼저 종료하면 이런 일이 줄어듭니다.</string>
-    <string name="legal_disclaimer">Pocket Studio는 MIT 라이선스로 배포되는 Code - OSS 소스 코드로 빌드됩니다.\nMicrosoft Corporation과 제휴 관계가 없으며 승인을 받지도 않았습니다.\n\"Visual Studio Code\"와 \"VS Code\"는 Microsoft의 상표입니다.\nMicrosoft Marketplace가 아닌 Open VSX 확장 레지스트리를 사용합니다.</string>
+    <string name="error_renderer_crash_loop">편집기가 연속해서 여러 번 예기치 않게 종료되어 VSCandro가 다시 열지 않습니다. 파일과 서버는 그대로입니다. 다른 앱을 먼저 종료하면 이런 일이 줄어듭니다.</string>
+    <string name="legal_disclaimer">VSCandro는 MIT 라이선스로 배포되는 Code - OSS 소스 코드로 빌드됩니다.\nMicrosoft Corporation과 제휴 관계가 없으며 승인을 받지도 않았습니다.\n\"Visual Studio Code\"와 \"VS Code\"는 Microsoft의 상표입니다.\nMicrosoft Marketplace가 아닌 Open VSX 확장 레지스트리를 사용합니다.</string>
 
     <!-- About dialog -->
-    <string name="about_title">Pocket Studio 정보</string>
+    <string name="about_title">VSCandro 정보</string>
     <string name="about_version_format">버전 %s</string>
     <string name="about_licenses">라이선스</string>
     <string name="licenses_title">오픈 소스 라이선스</string>
@@ -237,7 +237,7 @@
     <!-- Shown when a save could not be written out to the device folder. Names the
          consequence rather than the error: the user's next decision is whether to
          copy the file out before uninstalling, not which exception was thrown. -->
-    <string name="saf_write_back_failed">%1$s이(가) 기기 폴더에 저장되지 않았습니다. 사본은 Pocket Studio 안에만 있습니다.</string>
+    <string name="saf_write_back_failed">%1$s이(가) 기기 폴더에 저장되지 않았습니다. 사본은 VSCandro 안에만 있습니다.</string>
 
     <!-- Shown once after a folder opens when documents in it could not be copied into
          the editor: a provider error, or no room left. The opposite of
@@ -256,7 +256,7 @@
          because it holds documents that never reached the editor and deleting the
          directory would have taken them with it. Names the device as where the files
          are: the local copy is gone, so saf_write_back_failed's "the only copy is
-         inside Pocket Studio" would be backwards here. -->
+         inside VSCandro" would be backwards here. -->
     <string name="saf_directory_kept">%1$s은(는) 기기 폴더에 남겨 두었습니다. 편집기로 복사되지 않은 파일이 들어 있기 때문입니다. 더 이상 필요하지 않으면 기기 폴더에서 삭제하세요.</string>
 
     <!-- The same refusal one level down: a single document that never reached the
@@ -319,7 +319,7 @@
     <!-- The widest of the three. A write-back drain outlives the folder switch that
          stopped it and can still be streaming out of the copy, so a restart is what
          makes the copy safe to remove rather than closing the folder. -->
-    <string name="saf_mirror_folder_this_session">해당 폴더는 이번 세션에서 열려 있었습니다. Pocket Studio를 다시 시작한 다음 제거하세요.</string>
+    <string name="saf_mirror_folder_this_session">해당 폴더는 이번 세션에서 열려 있었습니다. VSCandro를 다시 시작한 다음 제거하세요.</string>
 
     <!-- Reasons a bridge call did not do what it was asked. These are returned to the
          page and rendered by the bundled extension's showErrorMessage, which is the
@@ -329,31 +329,31 @@
     <!-- The caller's session token did not match. Used by both the external-URL and
          the folder-removal calls; one string because it is one situation and one
          instruction. -->
-    <string name="bridge_stale_session">Pocket Studio가 요청을 수락하지 않았습니다. 창을 다시 로드한 후 다시 시도하세요.</string>
+    <string name="bridge_stale_session">VSCandro가 요청을 수락하지 않았습니다. 창을 다시 로드한 후 다시 시도하세요.</string>
     <!-- Too many storage commands already outstanding. The four that walk the disk share
          one thread with a bounded queue, so this is a wait and not a fault, and it needs
          its own sentence: bridge_stale_session above tells the reader to reload the
          window, which does not drain that thread and costs them their editor state on the
          way to waiting exactly as long. Named by AndroidBridge.STORAGE_BUSY. -->
-    <string name="bridge_storage_busy">Pocket Studio가 다른 저장소 요청을 처리하고 있습니다. 잠시 후에 다시 시도하세요.</string>
+    <string name="bridge_storage_busy">VSCandro가 다른 저장소 요청을 처리하고 있습니다. 잠시 후에 다시 시도하세요.</string>
     <!-- No Activity wired the removal callback, so nothing could have been removed.
          Distinct from a refusal with a reason: this is a mistake in the app rather
          than a state the user can act on, and saying "that folder is in use" would
          send them looking for a folder to close. -->
-    <string name="bridge_reclaim_unavailable">지금은 Pocket Studio에서 기기 폴더 저장 공간을 관리할 수 없습니다.</string>
+    <string name="bridge_reclaim_unavailable">지금은 VSCandro에서 기기 폴더 저장 공간을 관리할 수 없습니다.</string>
     <!-- Nothing on the device claimed the link. The one refusal the user can act on. -->
-    <string name="open_url_no_handler">Pocket Studio가 링크를 열지 않았습니다. 이 기기에는 해당 링크를 처리하는 앱이 없습니다.</string>
+    <string name="open_url_no_handler">VSCandro가 링크를 열지 않았습니다. 이 기기에는 해당 링크를 처리하는 앱이 없습니다.</string>
     <!-- Every other launch failure, with the class name of the exception substituted. The
          class name and never its message: ActivityNotFoundException quotes the whole
          Intent and FileUriExposedException quotes the file, so the message would hand
          the address back to the page that supplied it. -->
-    <string name="open_url_failed">Pocket Studio가 해당 링크를 열지 못했습니다: %1$s</string>
+    <string name="open_url_failed">VSCandro가 해당 링크를 열지 못했습니다: %1$s</string>
 
     <!-- A folder copied out to the device that did not arrive whole. Counts entries
          rather than naming them, because the failure is usually folder-wide and forty
          separate notices is another way of telling the user nothing. Deliberately not
          worded like saf_write_back_failed: most of the folder did arrive, so "the only
-         copy is inside Pocket Studio" would overstate. Also said once when a folder opens, for
+         copy is inside VSCandro" would overstate. Also said once when a folder opens, for
          the files only the app's copy holds that the open tried to send and could not. -->
     <plurals name="saf_upload_incomplete">
         <item quantity="other">%2$s: 항목 %1$d개가 기기 폴더에 저장되지 않았습니다.</item>
@@ -361,7 +361,7 @@
     <!-- The same folder stopped by the enumeration cap rather than by a refusal. Named
          separately because the cause is a limit this app chose, not the device saying
          no, and the user's next move is to copy the rest out by hand. -->
-    <string name="saf_upload_capped">%1$s은(는) 너무 커서 전체를 복사할 수 없습니다. 나머지는 Pocket Studio 안에 남아 있습니다.</string>
+    <string name="saf_upload_capped">%1$s은(는) 너무 커서 전체를 복사할 수 없습니다. 나머지는 VSCandro 안에 남아 있습니다.</string>
     <!-- Files only the app's copy holds that an open keeps inside the app because it cannot
          tell them from a document deleted in the device folder: an earlier version may have
          lost its note of them, or the folder lists as empty, or its record cannot be read.
@@ -370,13 +370,13 @@
          the device, which saving again does not send. Saving a kept file again in the editor
          does send it. The string is for one file (%1$s the folder, %2$s the file); the plural
          is used for two or more and names the first of them (%3$s). -->
-    <string name="saf_file_kept_in_app">%1$s: %2$s은(는) 기기 폴더에서 삭제되었을 수 있어 Pocket Studio 안에만 남아 있습니다. 기기 폴더로 보내려면 다시 저장하세요.</string>
+    <string name="saf_file_kept_in_app">%1$s: %2$s은(는) 기기 폴더에서 삭제되었을 수 있어 VSCandro 안에만 남아 있습니다. 기기 폴더로 보내려면 다시 저장하세요.</string>
     <plurals name="saf_files_kept_in_app">
-        <item quantity="other">%2$s: %3$s 등 파일 %1$d개는 기기 폴더에서 삭제되었을 수 있어 Pocket Studio 안에만 남아 있습니다. 기기 폴더로 보내려면 파일을 다시 저장하세요.</item>
+        <item quantity="other">%2$s: %3$s 등 파일 %1$d개는 기기 폴더에서 삭제되었을 수 있어 VSCandro 안에만 남아 있습니다. 기기 폴더로 보내려면 파일을 다시 저장하세요.</item>
     </plurals>
     <!-- Shown once when sending what a program changed while a device folder opened stopped
          partway. What was not sent is one of three things, and the sentence covers each: a
-         save that stays inside Pocket Studio, a deletion the device did not make, and a rename it
+         save that stays inside VSCandro, a deletion the device did not make, and a rename it
          did not make. The folder already open, whose watcher a failed switch to another
          folder put back, has a sentence of its own, saf_switch_changes_unsent: it did not
          open then. -->
@@ -426,7 +426,7 @@
          updated, rather than because it is being installed for the first time.
          Distinct from extracting_message so that a user who did not expect a
          wait learns why there is one. -->
-    <string name="status_updating_app">Pocket Studio 업데이트 중…</string>
+    <string name="status_updating_app">VSCandro 업데이트 중…</string>
 
     <!-- Opening a device folder. The sync can take a while on a large folder and
          the dialog is not cancellable, so it has to say what is happening.
@@ -502,7 +502,7 @@
     <!-- Shown once on the launch after a crash. The report is quoted into the
          message because the audience is developers, and truncated by the caller
          before it arrives. -->
-    <string name="crash_title">Pocket Studio가 충돌했습니다</string>
+    <string name="crash_title">VSCandro가 충돌했습니다</string>
     <string name="crash_message">이전 세션에서 앱이 충돌했습니다.\n\n%1$s</string>
     <string name="crash_dismiss">닫기</string>
     <string name="crash_copy_report">보고서 복사</string>
@@ -512,7 +512,7 @@
          quoted exactly as the palette lists it because the reader's next action
          is to type it, and it is the one part of this sentence a translator must
          leave in English. -->
-    <string name="storage_low_warning">저장 공간이 부족합니다(%1$s 남음). 명령 팔레트에서 \"Pocket Studio: Manage Device Folder Storage\"를 실행하세요.</string>
+    <string name="storage_low_warning">저장 공간이 부족합니다(%1$s 남음). 명령 팔레트에서 \"VSCandro: Manage Device Folder Storage\"를 실행하세요.</string>
 
     <!-- An Android System WebView older than the one this app is tested against.
          Both versions are arguments: the installed one is read off the device and
@@ -524,7 +524,7 @@
          changes when it does, and passing it as a number invites a translator to
          treat "%2$s or newer" as a count to inflect. -->
     <string name="webview_below_minimum_title">Android System WebView가 오래되었습니다</string>
-    <string name="webview_below_minimum">이 기기의 Android System WebView 버전은 %1$s입니다. Pocket Studio에는 %2$s 이상이 필요합니다. 그보다 낮으면 Markdown 미리 보기와 채팅 같은 확장 패널이 빈 화면으로 남습니다. Play Store에서 Android System WebView를 업데이트하세요.</string>
+    <string name="webview_below_minimum">이 기기의 Android System WebView 버전은 %1$s입니다. VSCandro에는 %2$s 이상이 필요합니다. 그보다 낮으면 Markdown 미리 보기와 채팅 같은 확장 패널이 빈 화면으로 남습니다. Play Store에서 Android System WebView를 업데이트하세요.</string>
     <string name="webview_update">업데이트</string>
 
     <!-- The extra key row, all of it spoken rather than drawn.
@@ -663,5 +663,5 @@
          one English word survived inside an otherwise translated About dialog. -->
     <string name="about_version_unknown">알 수 없음</string>
     <string name="saf_folder_unavailable">이 기기 폴더의 로컬 복사본을 더 이상 사용할 수 없습니다. 기기에서 폴더를 다시 여세요.</string>
-    <string name="saf_workspace_multiple_folders">이 작업 영역에는 기기 폴더가 두 개 이상 포함되어 있습니다. 한 번에 하나의 기기 폴더만 동기화되며, 다른 폴더의 수정 사항은 해당 폴더를 직접 열 때까지 Pocket Studio 안에만 유지됩니다.</string>
+    <string name="saf_workspace_multiple_folders">이 작업 영역에는 기기 폴더가 두 개 이상 포함되어 있습니다. 한 번에 하나의 기기 폴더만 동기화되며, 다른 폴더의 수정 사항은 해당 폴더를 직접 열 때까지 VSCandro 안에만 유지됩니다.</string>
 </resources>

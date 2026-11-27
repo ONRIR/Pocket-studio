@@ -1,5 +1,5 @@
 {
-  "displayName": "Pocket Studio Diffuser sur le réseau",
+  "displayName": "VSCandro Diffuser sur le réseau",
   "description": "Affiche l'adresse par laquelle d'autres appareils peuvent atteindre un serveur de développement lancé sur cet appareil",
-  "command.serveOnNetwork": "Pocket Studio: Diffuser sur le réseau"
+  "command.serveOnNetwork": "VSCandro: Diffuser sur le réseau"
 }

@@ -1,5 +1,5 @@
 {
-  "displayName": "Pocket Studio Im Netzwerk bereitstellen",
+  "displayName": "VSCandro Im Netzwerk bereitstellen",
   "description": "Zeigt die Adresse, unter der andere Geräte einen Entwicklungsserver auf diesem Gerät erreichen",
-  "command.serveOnNetwork": "Pocket Studio: Im Netzwerk bereitstellen"
+  "command.serveOnNetwork": "VSCandro: Im Netzwerk bereitstellen"
 }

@@ -1,5 +1,5 @@
 {
-  "displayName": "Pocket Studio Pubblica in rete",
+  "displayName": "VSCandro Pubblica in rete",
   "description": "Mostra l'indirizzo con cui altri dispositivi possono raggiungere un server di sviluppo in esecuzione su questo dispositivo",
-  "command.serveOnNetwork": "Pocket Studio: Pubblica in rete"
+  "command.serveOnNetwork": "VSCandro: Pubblica in rete"
 }

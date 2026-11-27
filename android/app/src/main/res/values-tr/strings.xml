@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pocket Studio</string>
-    <string name="notification_channel_name">Pocket Studio Sunucusu</string>
+    <string name="app_name">VSCandro</string>
+    <string name="notification_channel_name">VSCandro Sunucusu</string>
     <string name="notification_channel_description">Yerel geliştirme sunucusunu çalışır durumda tutar</string>
-    <string name="notification_title">Pocket Studio çalışıyor</string>
+    <string name="notification_title">VSCandro çalışıyor</string>
     <!-- The card the service puts up while first-run setup unpacks. Its own pair
          rather than the server's, because no server is running yet and the whole
          point of the hold is that the process survives a user who leaves. -->
-    <string name="notification_title_setup">Pocket Studio kuruluyor</string>
+    <string name="notification_title_setup">VSCandro kuruluyor</string>
     <string name="notification_text_setup">Düzenleyici ve araçları ayıklanıyor. Bu işlem birkaç dakika sürer.</string>
     <string name="notification_text">Yerel geliştirme sunucusu etkin</string>
     <!-- There was a second line here, shown when the server was adopted rather
@@ -25,7 +25,7 @@
     <!-- Shown once the automatic restart budget is spent. Replaces the two
          strings above in the same notification, which then carries no Stop
          action because there is nothing left to stop. -->
-    <string name="notification_title_stopped">Pocket Studio sunucusu durdu</string>
+    <string name="notification_title_stopped">VSCandro sunucusu durdu</string>
     <string name="notification_text_stopped">Sunucu art arda çöktü. Lütfen uygulamayı yeniden başlatın.</string>
     <string name="extracting_message">Temel dosyalar ayıklanıyor\u2026</string>
 
@@ -70,7 +70,7 @@
          about to become reachable again, and a user who is not told which
          setting to look for has nothing to search on. -->
     <string name="heap_override_suspended">settings.json içindeki özel bellek sınırı, art arda gelen çökmelerden sonra kapatıldı. Başka bir değer denemek için vscodroid.server.heapCeilingMb ayarını değiştirin ve uygulamayı yeniden başlatın.</string>
-    <string name="notice_editor_away_from_home">Başka bir uygulama %1$d bağlantı noktasını kullandığı için ayarlarınız ve oturum açma bilgileriniz yüklenmedi. Bunlar güvende: o uygulamayı kapatın, Sunucuyu Durdur düğmesine dokunun (veya Pocket Studio\'i bildiriminden durdurun) ve Pocket Studio\'i yeniden açın.</string>
+    <string name="notice_editor_away_from_home">Başka bir uygulama %1$d bağlantı noktasını kullandığı için ayarlarınız ve oturum açma bilgileriniz yüklenmedi. Bunlar güvende: o uygulamayı kapatın, Sunucuyu Durdur düğmesine dokunun (veya VSCandro\'i bildiriminden durdurun) ve VSCandro\'i yeniden açın.</string>
     <!-- The figure is passed in rather than written here, and it is the
          SHORTFALL the refusal measured, not the size of the unpack: this asks
          the user to free it, and what they have to free is what the device is
@@ -151,11 +151,11 @@
     <string name="server_starting">Sunucu başlatılıyor…</string>
     <!-- Shown on the page, with the reload control, once the editor's renderer
          has died several times in a minute and the app stops reopening it. -->
-    <string name="error_renderer_crash_loop">Düzenleyici art arda birkaç kez beklenmedik biçimde kapandı, bu yüzden Pocket Studio onu yeniden açmayı bıraktı. Dosyalarınıza ve sunucuya dokunulmadı. Önce başka uygulamaları kapatmak bu olasılığı azaltır.</string>
-    <string name="legal_disclaimer">Pocket Studio, MIT lisanslı Code - OSS kaynak kodundan derlenmiştir.\nMicrosoft Corporation ile bağlantılı değildir ve onun tarafından onaylanmamıştır.\n\"Visual Studio Code\" ve \"VS Code\", Microsoft\'un ticari markalarıdır.\nMicrosoft Marketplace yerine Open VSX uzantı kayıt defterini kullanır.</string>
+    <string name="error_renderer_crash_loop">Düzenleyici art arda birkaç kez beklenmedik biçimde kapandı, bu yüzden VSCandro onu yeniden açmayı bıraktı. Dosyalarınıza ve sunucuya dokunulmadı. Önce başka uygulamaları kapatmak bu olasılığı azaltır.</string>
+    <string name="legal_disclaimer">VSCandro, MIT lisanslı Code - OSS kaynak kodundan derlenmiştir.\nMicrosoft Corporation ile bağlantılı değildir ve onun tarafından onaylanmamıştır.\n\"Visual Studio Code\" ve \"VS Code\", Microsoft\'un ticari markalarıdır.\nMicrosoft Marketplace yerine Open VSX uzantı kayıt defterini kullanır.</string>
 
     <!-- About dialog -->
-    <string name="about_title">Pocket Studio Hakkında</string>
+    <string name="about_title">VSCandro Hakkında</string>
     <string name="about_version_format">Sürüm %s</string>
     <string name="about_licenses">Lisanslar</string>
     <string name="licenses_title">Açık Kaynak Lisansları</string>
@@ -237,7 +237,7 @@
     <!-- Shown when a save could not be written out to the device folder. Names the
          consequence rather than the error: the user's next decision is whether to
          copy the file out before uninstalling, not which exception was thrown. -->
-    <string name="saf_write_back_failed">%1$s cihaz klasörüne ulaşmadı. Tek kopyası Pocket Studio içinde.</string>
+    <string name="saf_write_back_failed">%1$s cihaz klasörüne ulaşmadı. Tek kopyası VSCandro içinde.</string>
 
     <!-- Shown once after a folder opens when documents in it could not be copied into
          the editor: a provider error, or no room left. The opposite of
@@ -258,7 +258,7 @@
          because it holds documents that never reached the editor and deleting the
          directory would have taken them with it. Names the device as where the files
          are: the local copy is gone, so saf_write_back_failed's "the only copy is
-         inside Pocket Studio" would be backwards here. -->
+         inside VSCandro" would be backwards here. -->
     <string name="saf_directory_kept">%1$s cihaz klasöründe tutuldu: düzenleyiciye hiç kopyalanmamış dosyalar içeriyor. Bunlara artık ihtiyacınız yoksa orada silin.</string>
 
     <!-- The same refusal one level down: a single document that never reached the
@@ -323,7 +323,7 @@
     <!-- The widest of the three. A write-back drain outlives the folder switch that
          stopped it and can still be streaming out of the copy, so a restart is what
          makes the copy safe to remove rather than closing the folder. -->
-    <string name="saf_mirror_folder_this_session">Bu klasör bu oturumda açıktı. Pocket Studio\'i yeniden başlatın, sonra kaldırın.</string>
+    <string name="saf_mirror_folder_this_session">Bu klasör bu oturumda açıktı. VSCandro\'i yeniden başlatın, sonra kaldırın.</string>
 
     <!-- Reasons a bridge call did not do what it was asked. These are returned to the
          page and rendered by the bundled extension's showErrorMessage, which is the
@@ -333,31 +333,31 @@
     <!-- The caller's session token did not match. Used by both the external-URL and
          the folder-removal calls; one string because it is one situation and one
          instruction. -->
-    <string name="bridge_stale_session">Pocket Studio isteği kabul etmedi. Pencereyi yeniden yükleyip tekrar deneyin.</string>
+    <string name="bridge_stale_session">VSCandro isteği kabul etmedi. Pencereyi yeniden yükleyip tekrar deneyin.</string>
     <!-- Too many storage commands already outstanding. The four that walk the disk share
          one thread with a bounded queue, so this is a wait and not a fault, and it needs
          its own sentence: bridge_stale_session above tells the reader to reload the
          window, which does not drain that thread and costs them their editor state on the
          way to waiting exactly as long. Named by AndroidBridge.STORAGE_BUSY. -->
-    <string name="bridge_storage_busy">Pocket Studio başka bir depolama isteğiyle meşgul. Birazdan yeniden deneyin.</string>
+    <string name="bridge_storage_busy">VSCandro başka bir depolama isteğiyle meşgul. Birazdan yeniden deneyin.</string>
     <!-- No Activity wired the removal callback, so nothing could have been removed.
          Distinct from a refusal with a reason: this is a mistake in the app rather
          than a state the user can act on, and saying "that folder is in use" would
          send them looking for a folder to close. -->
-    <string name="bridge_reclaim_unavailable">Pocket Studio şu anda cihaz klasörü depolamasını yönetemiyor.</string>
+    <string name="bridge_reclaim_unavailable">VSCandro şu anda cihaz klasörü depolamasını yönetemiyor.</string>
     <!-- Nothing on the device claimed the link. The one refusal the user can act on. -->
-    <string name="open_url_no_handler">Pocket Studio bunu açmadı. Bu cihazda o bağlantıyı açan bir uygulama yok.</string>
+    <string name="open_url_no_handler">VSCandro bunu açmadı. Bu cihazda o bağlantıyı açan bir uygulama yok.</string>
     <!-- Every other launch failure, with the class name of the exception substituted. The
          class name and never its message: ActivityNotFoundException quotes the whole
          Intent and FileUriExposedException quotes the file, so the message would hand
          the address back to the page that supplied it. -->
-    <string name="open_url_failed">Pocket Studio bu bağlantıyı açamadı: %1$s</string>
+    <string name="open_url_failed">VSCandro bu bağlantıyı açamadı: %1$s</string>
 
     <!-- A folder copied out to the device that did not arrive whole. Counts entries
          rather than naming them, because the failure is usually folder-wide and forty
          separate notices is another way of telling the user nothing. Deliberately not
          worded like saf_write_back_failed: most of the folder did arrive, so "the only
-         copy is inside Pocket Studio" would overstate. Also said once when a folder opens, for
+         copy is inside VSCandro" would overstate. Also said once when a folder opens, for
          the files only the app's copy holds that the open tried to send and could not. -->
     <plurals name="saf_upload_incomplete">
         <item quantity="one">%2$s: bir öğe cihaz klasörüne ulaşmadı.</item>
@@ -366,7 +366,7 @@
     <!-- The same folder stopped by the enumeration cap rather than by a refusal. Named
          separately because the cause is a limit this app chose, not the device saying
          no, and the user's next move is to copy the rest out by hand. -->
-    <string name="saf_upload_capped">%1$s tümüyle dışarı kopyalanamayacak kadar büyük. Geri kalanı Pocket Studio içinde kaldı.</string>
+    <string name="saf_upload_capped">%1$s tümüyle dışarı kopyalanamayacak kadar büyük. Geri kalanı VSCandro içinde kaldı.</string>
     <!-- Files only the app's copy holds that an open keeps inside the app because it cannot
          tell them from a document deleted in the device folder: an earlier version may have
          lost its note of them, or the folder lists as empty, or its record cannot be read.
@@ -375,14 +375,14 @@
          the device, which saving again does not send. Saving a kept file again in the editor
          does send it. The string is for one file (%1$s the folder, %2$s the file); the plural
          is used for two or more and names the first of them (%3$s). -->
-    <string name="saf_file_kept_in_app">%1$s: %2$s cihaz klasöründe silinmiş olabileceği için yalnızca Pocket Studio içinde kalıyor. Oraya göndermek için yeniden kaydedin.</string>
+    <string name="saf_file_kept_in_app">%1$s: %2$s cihaz klasöründe silinmiş olabileceği için yalnızca VSCandro içinde kalıyor. Oraya göndermek için yeniden kaydedin.</string>
     <plurals name="saf_files_kept_in_app">
-        <item quantity="one">%2$s: %1$d dosya, %3$s, cihaz klasöründe silinmiş olabileceği için yalnızca Pocket Studio içinde kalıyor. Oraya göndermek için yeniden kaydedin.</item>
-        <item quantity="other">%2$s: %3$s dahil %1$d dosya, cihaz klasöründe silinmiş olabilecekleri için yalnızca Pocket Studio içinde kalıyor. Oraya göndermek için bir dosyayı yeniden kaydedin.</item>
+        <item quantity="one">%2$s: %1$d dosya, %3$s, cihaz klasöründe silinmiş olabileceği için yalnızca VSCandro içinde kalıyor. Oraya göndermek için yeniden kaydedin.</item>
+        <item quantity="other">%2$s: %3$s dahil %1$d dosya, cihaz klasöründe silinmiş olabilecekleri için yalnızca VSCandro içinde kalıyor. Oraya göndermek için bir dosyayı yeniden kaydedin.</item>
     </plurals>
     <!-- Shown once when sending what a program changed while a device folder opened stopped
          partway. What was not sent is one of three things, and the sentence covers each: a
-         save that stays inside Pocket Studio, a deletion the device did not make, and a rename it
+         save that stays inside VSCandro, a deletion the device did not make, and a rename it
          did not make. The folder already open, whose watcher a failed switch to another
          folder put back, has a sentence of its own, saf_switch_changes_unsent: it did not
          open then. -->
@@ -432,7 +432,7 @@
          updated, rather than because it is being installed for the first time.
          Distinct from extracting_message so that a user who did not expect a
          wait learns why there is one. -->
-    <string name="status_updating_app">Pocket Studio güncelleniyor…</string>
+    <string name="status_updating_app">VSCandro güncelleniyor…</string>
 
     <!-- Opening a device folder. The sync can take a while on a large folder and
          the dialog is not cancellable, so it has to say what is happening.
@@ -509,7 +509,7 @@
     <!-- Shown once on the launch after a crash. The report is quoted into the
          message because the audience is developers, and truncated by the caller
          before it arrives. -->
-    <string name="crash_title">Pocket Studio çöktü</string>
+    <string name="crash_title">VSCandro çöktü</string>
     <string name="crash_message">Uygulama önceki oturumda çöktü.\n\n%1$s</string>
     <string name="crash_dismiss">Kapat</string>
     <string name="crash_copy_report">Raporu Kopyala</string>
@@ -519,7 +519,7 @@
          quoted exactly as the palette lists it because the reader's next action
          is to type it, and it is the one part of this sentence a translator must
          leave in English. -->
-    <string name="storage_low_warning">Depolama alanı az (%1$s kullanılabilir). Komut Paleti\'nden \"Pocket Studio: Manage Device Folder Storage\" komutunu çalıştırın.</string>
+    <string name="storage_low_warning">Depolama alanı az (%1$s kullanılabilir). Komut Paleti\'nden \"VSCandro: Manage Device Folder Storage\" komutunu çalıştırın.</string>
 
     <!-- An Android System WebView older than the one this app is tested against.
          Both versions are arguments: the installed one is read off the device and
@@ -531,7 +531,7 @@
          changes when it does, and passing it as a number invites a translator to
          treat "%2$s or newer" as a count to inflect. -->
     <string name="webview_below_minimum_title">Android System WebView güncel değil</string>
-    <string name="webview_below_minimum">Bu cihazdaki Android System WebView sürümü %1$s. Pocket Studio için %2$s veya daha yeni bir sürüm gerekir: daha eski sürümlerde Markdown önizlemeleri ve sohbet gibi uzantı panelleri boş kalır. Android System WebView\'ı Play Store\'dan güncelleyin.</string>
+    <string name="webview_below_minimum">Bu cihazdaki Android System WebView sürümü %1$s. VSCandro için %2$s veya daha yeni bir sürüm gerekir: daha eski sürümlerde Markdown önizlemeleri ve sohbet gibi uzantı panelleri boş kalır. Android System WebView\'ı Play Store\'dan güncelleyin.</string>
     <string name="webview_update">Güncelle</string>
 
     <!-- The extra key row, all of it spoken rather than drawn.
@@ -670,5 +670,5 @@
          one English word survived inside an otherwise translated About dialog. -->
     <string name="about_version_unknown">bilinmiyor</string>
     <string name="saf_folder_unavailable">Bu cihaz klasörünün yerel kopyası artık kullanılamıyor. Klasörü cihazdan yeniden açın.</string>
-    <string name="saf_workspace_multiple_folders">Bu çalışma alanı birden fazla cihaz klasörünü kapsıyor. Aynı anda yalnızca bir cihaz klasörü eşitlenir; diğerlerindeki değişiklikler o klasörler doğrudan açılana kadar Pocket Studio içinde kalır.</string>
+    <string name="saf_workspace_multiple_folders">Bu çalışma alanı birden fazla cihaz klasörünü kapsıyor. Aynı anda yalnızca bir cihaz klasörü eşitlenir; diğerlerindeki değişiklikler o klasörler doğrudan açılana kadar VSCandro içinde kalır.</string>
 </resources>

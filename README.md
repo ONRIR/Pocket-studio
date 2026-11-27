@@ -1,4 +1,4 @@
-# Pocket Studio
+# VSCandro
 
 **Modified from [VSCodroid](https://github.com/rmyndharis/VSCodroid) (MIT). Modifications made with AI.**
 

@@ -1,5 +1,5 @@
 {
-  "displayName": "Pocket Studio Sdílet v síti",
+  "displayName": "VSCandro Sdílet v síti",
   "description": "Ukáže adresu, na které ostatní zařízení dosáhnou na vývojový server běžící v tomto zařízení",
-  "command.serveOnNetwork": "Pocket Studio: Sdílet v síti"
+  "command.serveOnNetwork": "VSCandro: Sdílet v síti"
 }

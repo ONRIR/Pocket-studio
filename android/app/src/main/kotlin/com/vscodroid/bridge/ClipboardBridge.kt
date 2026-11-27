@@ -13,7 +13,7 @@ class ClipboardBridge(private val context: Context) {
 
     fun copyToClipboard(text: String): Boolean {
         return try {
-            val clip = ClipData.newPlainText("Pocket Studio", text)
+            val clip = ClipData.newPlainText("VSCandro", text)
             clipboardManager.setPrimaryClip(clip)
             true
         } catch (e: Exception) {

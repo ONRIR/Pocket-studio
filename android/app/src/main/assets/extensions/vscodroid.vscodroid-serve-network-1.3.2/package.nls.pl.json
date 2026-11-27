@@ -1,5 +1,5 @@
 {
-  "displayName": "Pocket Studio Udostępnij w sieci",
+  "displayName": "VSCandro Udostępnij w sieci",
   "description": "Pokazuje adres, pod którym inne urządzenia dosięgną serwera deweloperskiego działającego na tym urządzeniu",
-  "command.serveOnNetwork": "Pocket Studio: Udostępnij w sieci"
+  "command.serveOnNetwork": "VSCandro: Udostępnij w sieci"
 }

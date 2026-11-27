@@ -1,5 +1,5 @@
 {
-  "displayName": "Pocket Studio 在網路上提供服務",
+  "displayName": "VSCandro 在網路上提供服務",
   "description": "顯示其他裝置可以用來連到本裝置上開發伺服器的位址",
-  "command.serveOnNetwork": "Pocket Studio: 在網路上提供服務"
+  "command.serveOnNetwork": "VSCandro: 在網路上提供服務"
 }

@@ -71,8 +71,8 @@ function offerAntigravityEngine() {
         if (globalState.get(ENGINE_DECLINED)) globalState.update(ENGINE_DECLINED, undefined);
         const gate = globalThis[ENGINE_GATE];
         if (gate && !gate.engineTurnedOn()) {
-            vscode.window.showWarningMessage(vscode.l10n.t('The setting Antigravity: Run Engine shows as on, but Pocket Studio reads it ' +
-                'as off in {0}, so the Google Antigravity engine stays off. Pocket Studio reads nothing from that file when it has an ' +
+            vscode.window.showWarningMessage(vscode.l10n.t('The setting Antigravity: Run Engine shows as on, but VSCandro reads it ' +
+                'as off in {0}, so the Google Antigravity engine stays off. VSCandro reads nothing from that file when it has an ' +
                 'error VS Code works around, such as a missing comma, when it is larger than 1 MiB, or when its nesting is more ' +
                 'than 64 levels deep. Correct the file, then reload the window.', gate.settingsFile));
         }
@@ -83,7 +83,7 @@ function offerAntigravityEngine() {
     const turnOn = vscode.l10n.t('Turn On and Reload');
     const never = vscode.l10n.t("Don't Show Again");
     vscode.window.showWarningMessage(
-        vscode.l10n.t('Google Antigravity is installed, but Pocket Studio keeps its engine off. While the engine runs, ' +
+        vscode.l10n.t('Google Antigravity is installed, but VSCandro keeps its engine off. While the engine runs, ' +
             'other apps on this phone can reach it and use the account signed in to it. Turn it on only ' +
             'on a phone whose apps you trust.'),
         turnOn,
@@ -123,10 +123,10 @@ function activate(context) {
     statusBarItem.command = 'vscodroid.showProcesses';
     statusBarItem.name = vscode.l10n.t('Process Monitor');
     statusBarItem.text = '$(pulse) --';
-    statusBarItem.tooltip = vscode.l10n.t('Pocket Studio Process Monitor: loading...');
+    statusBarItem.tooltip = vscode.l10n.t('VSCandro Process Monitor: loading...');
     statusBarItem.show();
 
-    outputChannel = vscode.window.createOutputChannel(vscode.l10n.t('Pocket Studio Processes'));
+    outputChannel = vscode.window.createOutputChannel(vscode.l10n.t('VSCandro Processes'));
 
     // Register commands
     const showCmd = vscode.commands.registerCommand('vscodroid.showProcesses', () => {
@@ -178,7 +178,7 @@ function activate(context) {
             statusBarItem.text = '$(pulse) --';
             statusBarItem.backgroundColor = undefined;
             statusBarItem.tooltip = vscode.l10n.t(
-                'Pocket Studio Process Monitor: no process data for {0} s, so the count is no longer live.',
+                'VSCandro Process Monitor: no process data for {0} s, so the count is no longer live.',
                 STALE_AFTER_MS / 1000
             );
             return;
@@ -414,7 +414,7 @@ function showProcessTree() {
         ? new Date(s.timestamp).toLocaleTimeString()
         : vscode.l10n.t('time not recorded');
 
-    outputChannel.appendLine(vscode.l10n.t('Pocket Studio Process Tree ({0})', time));
+    outputChannel.appendLine(vscode.l10n.t('VSCandro Process Tree ({0})', time));
     outputChannel.appendLine(vscode.l10n.t('Total phantom processes: {0}', s.total));
     if (s.budget) {
         // Two numbers and not three. A `reclaim` threshold sat between them

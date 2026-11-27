@@ -30,7 +30,7 @@ import androidx.core.content.edit
 import androidx.core.net.toUri
 
 private const val POCKET_AI_NOTICE =
-    "Pocket Studio: modified from VSCodroid (MIT License, Copyright (c) 2026 Yudhi Armyndharis and " +
+    "VSCandro: modified from VSCodroid (MIT License, Copyright (c) 2026 Yudhi Armyndharis and " +
         "VSCodroid Community, github.com/rmyndharis/VSCodroid). Modifications made with AI."
 
 /**
@@ -250,7 +250,7 @@ internal suspend fun MainActivity.copyBugReport() {
         CrashReporter.generateBugReport(this@copyBugReport)
     }
     val clipboard = getSystemService(android.content.ClipboardManager::class.java)
-    val clip = android.content.ClipData.newPlainText("Pocket Studio Bug Report", report)
+    val clip = android.content.ClipData.newPlainText("VSCandro Bug Report", report)
     // Marked sensitive before it goes anywhere, because of what this clip
     // holds: [CrashReporter.generateBugReport] gathers the last 200 lines of
     // server output and the text of the three most recent crash logs. Android

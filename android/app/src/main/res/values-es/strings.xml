@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Pocket Studio</string>
-    <string name="notification_channel_name">Servidor de Pocket Studio</string>
+    <string name="app_name">VSCandro</string>
+    <string name="notification_channel_name">Servidor de VSCandro</string>
     <string name="notification_channel_description">Mantiene en ejecución el servidor de desarrollo local</string>
-    <string name="notification_title">Pocket Studio está en ejecución</string>
+    <string name="notification_title">VSCandro está en ejecución</string>
     <!-- The card the service puts up while first-run setup unpacks. Its own pair
          rather than the server's, because no server is running yet and the whole
          point of the hold is that the process survives a user who leaves. -->
-    <string name="notification_title_setup">Pocket Studio se está configurando</string>
+    <string name="notification_title_setup">VSCandro se está configurando</string>
     <string name="notification_text_setup">Se están descomprimiendo el editor y sus herramientas. Esto tarda unos minutos.</string>
     <string name="notification_text">Servidor de desarrollo local activo</string>
     <!-- There was a second line here, shown when the server was adopted rather
@@ -25,7 +25,7 @@
     <!-- Shown once the automatic restart budget is spent. Replaces the two
          strings above in the same notification, which then carries no Stop
          action because there is nothing left to stop. -->
-    <string name="notification_title_stopped">El servidor de Pocket Studio se detuvo</string>
+    <string name="notification_title_stopped">El servidor de VSCandro se detuvo</string>
     <string name="notification_text_stopped">El servidor falló varias veces seguidas. Reinicia la aplicación.</string>
     <string name="extracting_message">Extrayendo archivos principales\u2026</string>
 
@@ -70,7 +70,7 @@
          about to become reachable again, and a user who is not told which
          setting to look for has nothing to search on. -->
     <string name="heap_override_suspended">El límite de memoria personalizado de settings.json se desactivó después de varios fallos seguidos. Cambia vscodroid.server.heapCeilingMb y reinicia la aplicación para probar otro valor.</string>
-    <string name="notice_editor_away_from_home">Tu configuración y tus inicios de sesión no se cargaron porque otra aplicación está usando el puerto %1$d. Están a salvo: cierra esa aplicación, toca Detener servidor (o detén Pocket Studio desde su notificación) y vuelve a abrirlo.</string>
+    <string name="notice_editor_away_from_home">Tu configuración y tus inicios de sesión no se cargaron porque otra aplicación está usando el puerto %1$d. Están a salvo: cierra esa aplicación, toca Detener servidor (o detén VSCandro desde su notificación) y vuelve a abrirlo.</string>
     <!-- The figure is passed in rather than written here, and it is the
          SHORTFALL the refusal measured, not the size of the unpack: this asks
          the user to free it, and what they have to free is what the device is
@@ -151,11 +151,11 @@
     <string name="server_starting">Iniciando servidor…</string>
     <!-- Shown on the page, with the reload control, once the editor's renderer
          has died several times in a minute and the app stops reopening it. -->
-    <string name="error_renderer_crash_loop">El editor se cerró de forma inesperada varias veces seguidas, así que Pocket Studio dejó de reabrirlo. Tus archivos y el servidor están intactos. Cerrar otras aplicaciones primero lo hace menos probable.</string>
-    <string name="legal_disclaimer">Pocket Studio está compilado a partir del código fuente de Code - OSS, con licencia MIT.\nNo está afiliado a Microsoft Corporation ni cuenta con su respaldo.\n\"Visual Studio Code\" y \"VS Code\" son marcas comerciales de Microsoft.\nUsa el registro de extensiones Open VSX, no Microsoft Marketplace.</string>
+    <string name="error_renderer_crash_loop">El editor se cerró de forma inesperada varias veces seguidas, así que VSCandro dejó de reabrirlo. Tus archivos y el servidor están intactos. Cerrar otras aplicaciones primero lo hace menos probable.</string>
+    <string name="legal_disclaimer">VSCandro está compilado a partir del código fuente de Code - OSS, con licencia MIT.\nNo está afiliado a Microsoft Corporation ni cuenta con su respaldo.\n\"Visual Studio Code\" y \"VS Code\" son marcas comerciales de Microsoft.\nUsa el registro de extensiones Open VSX, no Microsoft Marketplace.</string>
 
     <!-- About dialog -->
-    <string name="about_title">Acerca de Pocket Studio</string>
+    <string name="about_title">Acerca de VSCandro</string>
     <string name="about_version_format">Versión %s</string>
     <string name="about_licenses">Licencias</string>
     <string name="licenses_title">Licencias de código abierto</string>
@@ -193,7 +193,7 @@
     <string name="toolchain_failed_not_published">Esta cadena de herramientas no está en la versión actual. Vuelve a intentarlo tras la próxima actualización.</string>
     <string name="toolchain_failed_digest">La descarga no coincide con lo publicado en esta versión. Vuelve a intentarlo.</string>
     <string name="toolchain_failed_corrupt">La descarga quedó incompleta. Vuelve a intentarlo.</string>
-    <string name="toolchain_failed_play">Play entrega esta cadena de herramientas solo a las aplicaciones que instaló. Instala Pocket Studio desde Play Store y vuelve a intentarlo.</string>
+    <string name="toolchain_failed_play">Play entrega esta cadena de herramientas solo a las aplicaciones que instaló. Instala VSCandro desde Play Store y vuelve a intentarlo.</string>
     <!-- Shown when a second install of the same toolchain is declined because one is
          already running. Not a failure: the toolchain is on its way in, by the install
          that got there first, and the only thing the user needs is to stop tapping. -->
@@ -237,7 +237,7 @@
     <!-- Shown when a save could not be written out to the device folder. Names the
          consequence rather than the error: the user's next decision is whether to
          copy the file out before uninstalling, not which exception was thrown. -->
-    <string name="saf_write_back_failed">%1$s no llegó a la carpeta del dispositivo. La única copia está dentro de Pocket Studio.</string>
+    <string name="saf_write_back_failed">%1$s no llegó a la carpeta del dispositivo. La única copia está dentro de VSCandro.</string>
 
     <!-- Shown once after a folder opens when documents in it could not be copied into
          the editor: a provider error, or no room left. The opposite of
@@ -260,7 +260,7 @@
          because it holds documents that never reached the editor and deleting the
          directory would have taken them with it. Names the device as where the files
          are: the local copy is gone, so saf_write_back_failed's "the only copy is
-         inside Pocket Studio" would be backwards here. -->
+         inside VSCandro" would be backwards here. -->
     <string name="saf_directory_kept">%1$s se conservó en la carpeta del dispositivo: contiene archivos que nunca se copiaron al editor. Elimínala ahí si ya no los necesitas.</string>
 
     <!-- The same refusal one level down: a single document that never reached the
@@ -327,7 +327,7 @@
     <!-- The widest of the three. A write-back drain outlives the folder switch that
          stopped it and can still be streaming out of the copy, so a restart is what
          makes the copy safe to remove rather than closing the folder. -->
-    <string name="saf_mirror_folder_this_session">Esa carpeta estuvo abierta en esta sesión. Reinicia Pocket Studio y luego quítala.</string>
+    <string name="saf_mirror_folder_this_session">Esa carpeta estuvo abierta en esta sesión. Reinicia VSCandro y luego quítala.</string>
 
     <!-- Reasons a bridge call did not do what it was asked. These are returned to the
          page and rendered by the bundled extension's showErrorMessage, which is the
@@ -337,31 +337,31 @@
     <!-- The caller's session token did not match. Used by both the external-URL and
          the folder-removal calls; one string because it is one situation and one
          instruction. -->
-    <string name="bridge_stale_session">Pocket Studio no aceptó la solicitud. Vuelve a cargar la ventana e inténtalo de nuevo.</string>
+    <string name="bridge_stale_session">VSCandro no aceptó la solicitud. Vuelve a cargar la ventana e inténtalo de nuevo.</string>
     <!-- Too many storage commands already outstanding. The four that walk the disk share
          one thread with a bounded queue, so this is a wait and not a fault, and it needs
          its own sentence: bridge_stale_session above tells the reader to reload the
          window, which does not drain that thread and costs them their editor state on the
          way to waiting exactly as long. Named by AndroidBridge.STORAGE_BUSY. -->
-    <string name="bridge_storage_busy">Pocket Studio está ocupado con otra solicitud de almacenamiento. Vuelve a intentarlo en un momento.</string>
+    <string name="bridge_storage_busy">VSCandro está ocupado con otra solicitud de almacenamiento. Vuelve a intentarlo en un momento.</string>
     <!-- No Activity wired the removal callback, so nothing could have been removed.
          Distinct from a refusal with a reason: this is a mistake in the app rather
          than a state the user can act on, and saying "that folder is in use" would
          send them looking for a folder to close. -->
-    <string name="bridge_reclaim_unavailable">Pocket Studio no puede administrar ahora el almacenamiento de carpetas del dispositivo.</string>
+    <string name="bridge_reclaim_unavailable">VSCandro no puede administrar ahora el almacenamiento de carpetas del dispositivo.</string>
     <!-- Nothing on the device claimed the link. The one refusal the user can act on. -->
-    <string name="open_url_no_handler">Pocket Studio no lo abrió. Ninguna aplicación de este dispositivo admite ese enlace.</string>
+    <string name="open_url_no_handler">VSCandro no lo abrió. Ninguna aplicación de este dispositivo admite ese enlace.</string>
     <!-- Every other launch failure, with the class name of the exception substituted. The
          class name and never its message: ActivityNotFoundException quotes the whole
          Intent and FileUriExposedException quotes the file, so the message would hand
          the address back to the page that supplied it. -->
-    <string name="open_url_failed">Pocket Studio no pudo abrir ese enlace: %1$s</string>
+    <string name="open_url_failed">VSCandro no pudo abrir ese enlace: %1$s</string>
 
     <!-- A folder copied out to the device that did not arrive whole. Counts entries
          rather than naming them, because the failure is usually folder-wide and forty
          separate notices is another way of telling the user nothing. Deliberately not
          worded like saf_write_back_failed: most of the folder did arrive, so "the only
-         copy is inside Pocket Studio" would overstate. Also said once when a folder opens, for
+         copy is inside VSCandro" would overstate. Also said once when a folder opens, for
          the files only the app's copy holds that the open tried to send and could not. -->
     <plurals name="saf_upload_incomplete">
         <item quantity="one">%2$s: un elemento no llegó a la carpeta del dispositivo.</item>
@@ -371,7 +371,7 @@
     <!-- The same folder stopped by the enumeration cap rather than by a refusal. Named
          separately because the cause is a limit this app chose, not the device saying
          no, and the user's next move is to copy the rest out by hand. -->
-    <string name="saf_upload_capped">%1$s es demasiado grande para copiarla completa al dispositivo. El resto se quedó dentro de Pocket Studio.</string>
+    <string name="saf_upload_capped">%1$s es demasiado grande para copiarla completa al dispositivo. El resto se quedó dentro de VSCandro.</string>
     <!-- Files only the app's copy holds that an open keeps inside the app because it cannot
          tell them from a document deleted in the device folder: an earlier version may have
          lost its note of them, or the folder lists as empty, or its record cannot be read.
@@ -380,15 +380,15 @@
          the device, which saving again does not send. Saving a kept file again in the editor
          does send it. The string is for one file (%1$s the folder, %2$s the file); the plural
          is used for two or more and names the first of them (%3$s). -->
-    <string name="saf_file_kept_in_app">%1$s: el archivo %2$s solo está en Pocket Studio, porque puede haberse eliminado en la carpeta del dispositivo. Guárdalo de nuevo para enviarlo allí.</string>
+    <string name="saf_file_kept_in_app">%1$s: el archivo %2$s solo está en VSCandro, porque puede haberse eliminado en la carpeta del dispositivo. Guárdalo de nuevo para enviarlo allí.</string>
     <plurals name="saf_files_kept_in_app">
-        <item quantity="one">%2$s: %1$d archivo, %3$s, solo está en Pocket Studio, porque puede haberse eliminado en la carpeta del dispositivo. Guárdalo de nuevo para enviarlo allí.</item>
-        <item quantity="many">%2$s: %1$d archivos, entre ellos %3$s, solo están en Pocket Studio, porque pueden haberse eliminado en la carpeta del dispositivo. Guarda un archivo de nuevo para enviarlo allí.</item>
-        <item quantity="other">%2$s: %1$d archivos, entre ellos %3$s, solo están en Pocket Studio, porque pueden haberse eliminado en la carpeta del dispositivo. Guarda un archivo de nuevo para enviarlo allí.</item>
+        <item quantity="one">%2$s: %1$d archivo, %3$s, solo está en VSCandro, porque puede haberse eliminado en la carpeta del dispositivo. Guárdalo de nuevo para enviarlo allí.</item>
+        <item quantity="many">%2$s: %1$d archivos, entre ellos %3$s, solo están en VSCandro, porque pueden haberse eliminado en la carpeta del dispositivo. Guarda un archivo de nuevo para enviarlo allí.</item>
+        <item quantity="other">%2$s: %1$d archivos, entre ellos %3$s, solo están en VSCandro, porque pueden haberse eliminado en la carpeta del dispositivo. Guarda un archivo de nuevo para enviarlo allí.</item>
     </plurals>
     <!-- Shown once when sending what a program changed while a device folder opened stopped
          partway. What was not sent is one of three things, and the sentence covers each: a
-         save that stays inside Pocket Studio, a deletion the device did not make, and a rename it
+         save that stays inside VSCandro, a deletion the device did not make, and a rename it
          did not make. The folder already open, whose watcher a failed switch to another
          folder put back, has a sentence of its own, saf_switch_changes_unsent: it did not
          open then. -->
@@ -438,7 +438,7 @@
          updated, rather than because it is being installed for the first time.
          Distinct from extracting_message so that a user who did not expect a
          wait learns why there is one. -->
-    <string name="status_updating_app">Actualizando Pocket Studio…</string>
+    <string name="status_updating_app">Actualizando VSCandro…</string>
 
     <!-- Opening a device folder. The sync can take a while on a large folder and
          the dialog is not cancellable, so it has to say what is happening.
@@ -516,7 +516,7 @@
     <!-- Shown once on the launch after a crash. The report is quoted into the
          message because the audience is developers, and truncated by the caller
          before it arrives. -->
-    <string name="crash_title">Pocket Studio falló</string>
+    <string name="crash_title">VSCandro falló</string>
     <string name="crash_message">La aplicación falló en una sesión anterior.\n\n%1$s</string>
     <string name="crash_dismiss">Descartar</string>
     <string name="crash_copy_report">Copiar informe</string>
@@ -526,7 +526,7 @@
          quoted exactly as the palette lists it because the reader's next action
          is to type it, and it is the one part of this sentence a translator must
          leave in English. -->
-    <string name="storage_low_warning">Queda poco almacenamiento (%1$s disponible). Ejecuta \"Pocket Studio: Manage Device Folder Storage\" desde la Paleta de comandos.</string>
+    <string name="storage_low_warning">Queda poco almacenamiento (%1$s disponible). Ejecuta \"VSCandro: Manage Device Folder Storage\" desde la Paleta de comandos.</string>
 
     <!-- An Android System WebView older than the one this app is tested against.
          Both versions are arguments: the installed one is read off the device and
@@ -538,7 +538,7 @@
          changes when it does, and passing it as a number invites a translator to
          treat "%2$s or newer" as a count to inflect. -->
     <string name="webview_below_minimum_title">Android System WebView está desactualizado</string>
-    <string name="webview_below_minimum">Android System WebView de este dispositivo tiene la versión %1$s. Pocket Studio necesita la %2$s o posterior: con una anterior, las vistas previas de Markdown y los paneles de extensiones, como el chat, se quedan en blanco. Actualiza Android System WebView desde Play Store.</string>
+    <string name="webview_below_minimum">Android System WebView de este dispositivo tiene la versión %1$s. VSCandro necesita la %2$s o posterior: con una anterior, las vistas previas de Markdown y los paneles de extensiones, como el chat, se quedan en blanco. Actualiza Android System WebView desde Play Store.</string>
     <string name="webview_update">Actualizar</string>
 
     <!-- The extra key row, all of it spoken rather than drawn.
@@ -677,5 +677,5 @@
          one English word survived inside an otherwise translated About dialog. -->
     <string name="about_version_unknown">desconocida</string>
     <string name="saf_folder_unavailable">La copia local de esta carpeta del dispositivo ya no está disponible. Vuelve a abrir la carpeta desde el dispositivo.</string>
-    <string name="saf_workspace_multiple_folders">Este espacio de trabajo abarca más de una carpeta del dispositivo. Solo se sincroniza una carpeta del dispositivo a la vez; los cambios en las demás permanecen en Pocket Studio hasta que abras esas carpetas directamente.</string>
+    <string name="saf_workspace_multiple_folders">Este espacio de trabajo abarca más de una carpeta del dispositivo. Solo se sincroniza una carpeta del dispositivo a la vez; los cambios en las demás permanecen en VSCandro hasta que abras esas carpetas directamente.</string>
 </resources>

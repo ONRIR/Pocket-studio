@@ -1,5 +1,5 @@
 {
-  "displayName": "Pocket Studio Открыть доступ по сети",
+  "displayName": "VSCandro Открыть доступ по сети",
   "description": "Показывает адрес, по которому другие устройства могут обратиться к серверу разработки на этом устройстве",
-  "command.serveOnNetwork": "Pocket Studio: Открыть доступ по сети"
+  "command.serveOnNetwork": "VSCandro: Открыть доступ по сети"
 }

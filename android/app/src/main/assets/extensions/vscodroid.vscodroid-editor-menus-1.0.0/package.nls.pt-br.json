@@ -1,5 +1,5 @@
 {
-  "displayName": "Pocket Studio Menus do editor",
+  "displayName": "VSCandro Menus do editor",
   "description": "Itens adicionais para o menu de contexto do editor",
   "command.selectAll": "Selecionar Tudo"
 }

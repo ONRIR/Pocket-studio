@@ -1,5 +1,5 @@
 {
-  "displayName": "Pocket Studio Servir na rede",
+  "displayName": "VSCandro Servir na rede",
   "description": "Mostra o endereço que outros aparelhos podem usar para alcançar um servidor de desenvolvimento rodando neste aparelho",
-  "command.serveOnNetwork": "Pocket Studio: Servir na rede"
+  "command.serveOnNetwork": "VSCandro: Servir na rede"
 }
