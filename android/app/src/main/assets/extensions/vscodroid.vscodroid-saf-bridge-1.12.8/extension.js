@@ -25,6 +25,7 @@
  * - vscodroid.about                : Opens the Android About dialog
  * - vscodroid.copyBugReport        : Opens a bug report to read, then copies it
  * - vscodroid.runFile              : Runs the open file in a terminal, from the editor title bar
+ * - vscodroid.console.emit         : Carries the floating console's output to the page
  *
  * It also warns about a workspace folder opened by path on shared storage, and
  * offers Open Folder from Device instead; and it offers to reopen a device
@@ -133,6 +134,74 @@ const RUN_COMMANDS = {
     c: { toolchain: 'cpp', label: 'C/C++', command: (/** @type {string} */ file) => `cc ${file} -o "$TMPDIR/vscodroid-run" && "$TMPDIR/vscodroid-run"` },
     cpp: { toolchain: 'cpp', label: 'C/C++', command: (/** @type {string} */ file) => `c++ ${file} -o "$TMPDIR/vscodroid-run" && "$TMPDIR/vscodroid-run"` },
 };
+
+// -- Floating console (Run on a C or C++ file) --
+// The overlay is drawn by the page (MainActivity.injectConsoleOverlay) and talks to this extension over
+// the BroadcastChannel 'vscodroid-console'. The program itself runs in the Node extension host
+// (process-monitor's console.js); this side only carries messages between the two.
+
+/** @type {BroadcastChannel | undefined} */
+let _consoleChannel;
+/** The overlay's current run id; keys from an older run are dropped. */
+let _consoleId = '';
+let _consoleSeq = 0;
+/** @type {((m: any) => void) | undefined} */
+let _consoleOpened;
+
+function getConsoleChannel() {
+    if (_consoleChannel) return _consoleChannel;
+    _consoleChannel = new BroadcastChannel('vscodroid-console');
+    _consoleChannel.onmessage = (e) => {
+        const d = e.data;
+        if (!d || typeof d.type !== 'string') return;
+        if (d.type === 'opened') {
+            if (_consoleOpened && d.id === _consoleId) _consoleOpened(d);
+            return;
+        }
+        if (d.id !== _consoleId) return;
+        if (d.type === 'input') {
+            vscode.commands.executeCommand('vscodroid.console.input', { id: d.id, data: String(d.data || '') }).then(undefined, () => {});
+        } else if (d.type === 'resize') {
+            vscode.commands.executeCommand('vscodroid.console.resize', { id: d.id, cols: d.cols, rows: d.rows }).then(undefined, () => {});
+        } else if (d.type === 'kill') {
+            vscode.commands.executeCommand('vscodroid.console.kill', { id: d.id }).then(undefined, () => {});
+        }
+    };
+    return _consoleChannel;
+}
+
+/**
+ * Opens the overlay and starts the command in it. False when the overlay did not answer or the program
+ * side could not start, so the caller can run the command in the terminal panel instead.
+ * @param {string} cmd
+ * @param {string} cwd
+ * @param {string} title
+ */
+async function startInConsole(cmd, cwd, title) {
+    const channel = getConsoleChannel();
+    const id = `run-${Date.now()}-${++_consoleSeq}`;
+    if (_consoleId) vscode.commands.executeCommand('vscodroid.console.kill', { id: _consoleId }).then(undefined, () => {});
+    _consoleId = id;
+    const opened = await new Promise((resolve) => {
+        const timer = setTimeout(() => { _consoleOpened = undefined; resolve(null); }, 2500);
+        _consoleOpened = (m) => { clearTimeout(timer); _consoleOpened = undefined; resolve(m); };
+        channel.postMessage({ type: 'open', id, title });
+    });
+    if (!opened) return false;
+    let result;
+    try {
+        result = await vscode.commands.executeCommand('vscodroid.console.start', {
+            id, cmd, cwd, cols: opened.cols, rows: opened.rows
+        });
+    } catch (_) {
+        result = undefined;
+    }
+    if (!result || !result.ok) {
+        channel.postMessage({ type: 'close', id });
+        return false;
+    }
+    return true;
+}
 
 /** A path as a single shell word. */
 function shellQuote(/** @type {string} */ path) {
@@ -1008,6 +1077,15 @@ function activate(context) {
             return;
         }
         const folder = vscode.workspace.getWorkspaceFolder(document.uri);
+        // C and C++ programs usually read from the keyboard, so they run in the floating console
+        // over the editor. If it cannot open (no overlay, no pseudo-terminal), the terminal panel
+        // below runs them as before.
+        if (document.languageId === 'c' || document.languageId === 'cpp') {
+            const cwdForConsole = folder ? folder.uri.path : document.uri.path.replace(/\/[^/]*$/, '');
+            const title = document.uri.path.slice(document.uri.path.lastIndexOf('/') + 1);
+            if (await startInConsole(runner.command(shellQuote(document.uri.path)), cwdForConsole, title)) return;
+            if (superseded()) return;
+        }
         const runTerminal = vscode.l10n.t('VSCandro Run');
         vscode.window.terminals.find((t) => t.name === runTerminal)?.dispose();
         const terminal = vscode.window.createTerminal({
@@ -1019,7 +1097,13 @@ function activate(context) {
         terminal.sendText(runner.command(shellQuote(document.uri.path)));
     });
 
+    // The program side reports through this command (see process-monitor's console.js).
+    const consoleEmitCmd = vscode.commands.registerCommand('vscodroid.console.emit', (/** @type {any} */ m) => {
+        if (m && typeof m.type === 'string' && typeof m.id === 'string') getConsoleChannel().postMessage(m);
+    });
+
     context.subscriptions.push(
+        consoleEmitCmd,
         workspaceFoldersListener,
         openFolderCmd,
         recentFolderCmd,

@@ -70,6 +70,8 @@ internal fun MainActivity.injectBridgeToken() {
         // Makes Enter on the soft keyboard commit an inline edit or a Quick Open pick,
         // and the quick input's keys work while a word is composing
         injectComposingEnter()
+        // The floating console that Run opens for C and C++ files
+        injectConsoleOverlay()
         injectTerminalTypedCharacters()
         // Shows the page's background, not the dismantled workbench, from the moment the
         // page is told to leave until the next one paints

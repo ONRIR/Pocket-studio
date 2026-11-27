@@ -2,7 +2,7 @@
   "name": "vscodroid-process-monitor",
   "displayName": "%displayName%",
   "description": "%description%",
-  "version": "1.4.7",
+  "version": "1.4.8",
   "publisher": "vscodroid",
   "engines": {
     "vscode": "^1.96.0"

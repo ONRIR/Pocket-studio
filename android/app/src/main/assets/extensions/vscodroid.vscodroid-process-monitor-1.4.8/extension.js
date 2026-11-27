@@ -128,6 +128,14 @@ function activate(context) {
 
     outputChannel = vscode.window.createOutputChannel(vscode.l10n.t('VSCandro Processes'));
 
+    // The floating console's program side (Run on a C or C++ file). A failure to load it
+    // leaves Run in the terminal panel, which the web-side bridge falls back to.
+    try {
+        require('./console').register(context);
+    } catch (err) {
+        console.error('vscodroid console unavailable', err);
+    }
+
     // Register commands
     const showCmd = vscode.commands.registerCommand('vscodroid.showProcesses', () => {
         showProcessTree();
