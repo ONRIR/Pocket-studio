@@ -474,5 +474,5 @@ jobs:
           sha256sum VSCandro-debug.apk | tee VSCandro-debug.apk.sha256
           tag="build-${GITHUB_RUN_NUMBER}"
           gh release create "$tag" VSCandro-debug.apk VSCandro-debug.apk.sha256 \
-            --title "Pocket Studio debug build $GITHUB_RUN_NUMBER" \
-            --notes "Debug-signed APK ($GITHUB_SHA). Package com.onrir.studio.debug." --target "$GITHUB_SHA"
+            --title "VSCandro build $GITHUB_RUN_NUMBER" \
+            --notes "$(git log -1 --format=%B "$GITHUB_SHA" | head -c 1500)" --target "$GITHUB_SHA"

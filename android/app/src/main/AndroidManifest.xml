@@ -7,6 +7,7 @@
          downloads, dev-server previews on the local network, and whatever the
          terminal or an extension fetches -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <!-- Foreground service: keep Node.js server alive -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -286,6 +287,23 @@
                  dropping edits would not be. Folders still open through the SAF
                  picker, which does have the sync engine that makes write-back work. -->
         </activity>
+
+        <!-- In-app updates screen (VSCandro): checks the fork's releases on demand -->
+        <activity
+            android:name=".UpdatesActivity"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboard|keyboardHidden|screenLayout|smallestScreenSize|uiMode"
+            android:theme="@style/Theme.VSCodroid" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.updates"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/update_paths" />
+        </provider>
 
         <!-- Toolchain settings: manage on-demand language toolchains -->
         <activity

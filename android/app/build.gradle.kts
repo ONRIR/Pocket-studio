@@ -177,6 +177,8 @@ android {
         targetSdk = 36
         versionCode = 23
         versionName = "1.11.0"
+        // Build number of the CI run that made this APK (the release is tagged build-N). 0 for local builds.
+        buildConfigField("int", "BUILD_NUMBER", System.getenv("GITHUB_RUN_NUMBER") ?: "0")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

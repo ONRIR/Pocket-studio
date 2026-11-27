@@ -64,7 +64,7 @@ fun MainActivity.showAboutDialog() {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.about_title))
             .setMessage(getString(R.string.about_body, version, disclaimer) + "\n\n" + POCKET_AI_NOTICE)
-            .setPositiveButton(getString(R.string.dialog_ok), null)
+            .setPositiveButton("Updates") { _, _ -> startActivity(android.content.Intent(this, UpdatesActivity::class.java)) }
             .setNeutralButton(getString(R.string.about_licenses)) { _, _ -> showLicensesDialog() }
             .setNegativeButton("Change app icon") { _, _ -> showIconPickerDialog() }
     )
