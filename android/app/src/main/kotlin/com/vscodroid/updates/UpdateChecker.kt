@@ -27,7 +27,7 @@ object UpdateChecker {
 
     /** Releases tagged build-N whose number is above [installed], oldest first, so the last one is the newest and the recommended one. */
     @Throws(IOException::class)
-    fun newerThan(installed: Int): List<UpdateRelease> {
+    fun newerThan(installed: Int, wantCpp: Boolean = false): List<UpdateRelease> {
         val conn = URL(API).openConnection() as HttpURLConnection
         try {
             conn.connectTimeout = 15000
@@ -37,7 +37,7 @@ object UpdateChecker {
             val code = conn.responseCode
             if (code != 200) throw IOException("GitHub answered HTTP $code")
             val text = conn.inputStream.bufferedReader().use { it.readText() }
-            return parse(text).filter { it.number > installed }.sortedBy { it.number }
+            return parse(text, wantCpp).filter { it.number > installed }.sortedBy { it.number }
         } finally {
             conn.disconnect()
         }
@@ -90,7 +90,8 @@ object UpdateChecker {
         }
     }
 
-    internal fun parse(json: String): List<UpdateRelease> {
+    /** [wantCpp]: this install carries C/C++ inside, so it is offered the cpp APK of a release (and a release without one is skipped). */
+    internal fun parse(json: String, wantCpp: Boolean = false): List<UpdateRelease> {
         val out = ArrayList<UpdateRelease>()
         val arr = JSONArray(json)
         for (i in 0 until arr.length()) {
@@ -106,10 +107,10 @@ object UpdateChecker {
             for (j in 0 until assets.length()) {
                 val a = assets.getJSONObject(j)
                 val name = a.optString("name")
-                if (name.endsWith(".apk") && !name.contains("cpp") && apkUrl == null) {
+                if (name.endsWith(".apk") && name.contains("cpp") == wantCpp && apkUrl == null) {
                     apkUrl = a.optString("browser_download_url")
                     apkSize = a.optLong("size")
-                } else if (name.endsWith(".apk.sha256") && !name.contains("cpp")) {
+                } else if (name.endsWith(".apk.sha256") && name.contains("cpp") == wantCpp) {
                     shaUrl = a.optString("browser_download_url")
                 }
             }

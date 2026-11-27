@@ -100,7 +100,7 @@ class UpdatesActivity : AppCompatActivity() {
         status.text = "Checking…"
         list.removeAllViews()
         worker.execute {
-            val result = try { Result.success(UpdateChecker.newerThan(BuildConfig.BUILD_NUMBER)) } catch (e: Exception) { Result.failure<List<UpdateRelease>>(e) }
+            val result = try { Result.success(UpdateChecker.newerThan(BuildConfig.BUILD_NUMBER, try { assets.open("toolchains/toolchain_cpp.zip").close(); true } catch (e: java.io.IOException) { false })) } catch (e: Exception) { Result.failure<List<UpdateRelease>>(e) }
             val up = try { UpdateChecker.upstreamNewer(BuildConfig.VERSION_NAME.substringBefore('-')) } catch (e: Exception) { emptyList() }
             main.post {
                 if (isFinishing || isDestroyed) return@post

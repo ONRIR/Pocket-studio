@@ -525,6 +525,29 @@ jobs:
           have=$(sha256sum android/app/src/main/assets/toolchains/toolchain_cpp.zip | cut -d' ' -f1)
           echo "published $want"; echo "downloaded $have"
           [ -n "$want" ] && [ "$want" = "$have" ]
+          # Extra extensions for the C/C++ build only, from Open VSX, each pinned to a sha256. A VSIX is a ZIP
+          # whose extension/ folder is the extension; it goes into the assets exactly like the other
+          # bundled marketplace extensions (directory publisher.name-version), so the first-run setup
+          # unpacks it and lists it in extensions.json by the same code. A hash mismatch fails the build.
+          for spec in \
+            "llvm-vs-code-extensions/vscode-clangd/0.6.0/32030694fa6c0ef438f4e4219f84677cd32f603c7faa4c71a283efc1f5b51751" \
+            "streetsidesoftware/code-spell-checker/4.10.0/0b587a38c4c78887a782158f727bbdaddfab2deae3ce0d80efbab40d56475638" \
+            "PKief/material-icon-theme/5.40.0/55b565f200881abfd807baf9be52fce45fd52fef013ba71b0f8394984ce1ae06" \
+            "usernamehw/errorlens/3.30.0/b236000f50998b992289b2d354dcbd4fc99b64c75850eebcbb986f7a210c34f4" \
+            "ms-vscode/cmake-tools/1.25.10/047d252153bfb8e21b42f1da2d057e2c9d4d15696abf5f192697211b80edcee0"; do
+            ns=$(echo "$spec" | cut -d/ -f1); nm=$(echo "$spec" | cut -d/ -f2); v=$(echo "$spec" | cut -d/ -f3); want=$(echo "$spec" | cut -d/ -f4)
+            vsix="/tmp/${ns}.${nm}-${v}.vsix"
+            curl -fsSL -o "$vsix" "https://open-vsx.org/api/${ns}/${nm}/${v}/file/${ns}.${nm}-${v}.vsix"
+            have=$(sha256sum "$vsix" | cut -d' ' -f1)
+            echo "$ns.$nm $v want $want have $have"
+            [ "$want" = "$have" ]
+            dest="android/app/src/main/assets/extensions/${ns}.${nm}-${v}"
+            rm -rf "$dest" /tmp/vsix-x; mkdir -p /tmp/vsix-x
+            unzip -q "$vsix" 'extension/*' -d /tmp/vsix-x
+            [ -f /tmp/vsix-x/extension/package.json ]
+            mkdir -p "$dest"; cp -a /tmp/vsix-x/extension/. "$dest/"
+          done
+          du -sm android/app/src/main/assets/extensions/* | sort -n | tail -12
           (cd android && ./gradlew assembleDebug)
           cp android/app/build/outputs/apk/debug/app-debug.apk VSCandro-cpp-debug.apk
           sha256sum VSCandro-cpp-debug.apk | tee VSCandro-cpp-debug.apk.sha256
