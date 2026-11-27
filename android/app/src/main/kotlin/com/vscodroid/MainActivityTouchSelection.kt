@@ -39,15 +39,32 @@ internal fun MainActivity.injectTouchSelection() {
             }
             function linesOf(target) {
                 if (!target || !target.closest) return null;
-                var lines = target.closest('.lines-content');
-                return lines && lines.closest('.monaco-editor') ? lines : null;
+                var ed = target.closest('.monaco-editor');
+                if (!ed) return null;
+                // Anywhere in the editor, empty space included, but not its widgets or gutter.
+                if (target.closest('.editor-widget, .suggest-widget, .monaco-hover, .parameter-hints-widget, .find-widget, .monaco-menu, .monaco-list, .minimap, .scrollbar, .margin, .glyph-margin, .decorationsOverviewRuler')) return null;
+                return ed.querySelector('.lines-content');
             }
 
             function dispatchOn(lines, type, x, y, count) {
-                var stack = document.elementsFromPoint(x, y);
                 var el = null;
-                for (var i = 0; i < stack.length; i++) {
-                    if (lines.contains(stack[i]) && !stack[i].closest('.colorpicker-color-decoration')) { el = stack[i]; break; }
+                function pick() {
+                    var stack = document.elementsFromPoint(x, y);
+                    for (var i = 0; i < stack.length; i++) {
+                        if (lines.contains(stack[i]) && !stack[i].closest('.colorpicker-color-decoration')) return stack[i];
+                    }
+                    return null;
+                }
+                el = pick();
+                if (!el) {
+                    // Empty space beside or below the text: aim at the nearest point on the text area.
+                    var vl = lines.querySelector('.view-lines');
+                    if (!vl) return false;
+                    var r = vl.getBoundingClientRect();
+                    if (!r.width || !r.height) return false;
+                    x = clamp(x, r.left + 1, r.right - 1);
+                    y = clamp(y, r.top + 1, r.bottom - 1);
+                    el = pick();
                 }
                 if (!el) return false;
                 var ev = document.createEvent('CustomEvent');
@@ -77,7 +94,7 @@ internal fun MainActivity.injectTouchSelection() {
 
             // Selection rectangles -> the two ends.
             function ends(editor) {
-                var els = editor.querySelectorAll('.selections-layer .selected-text');
+                var els = editor.querySelectorAll('.selected-text');
                 var first = null, last = null;
                 for (var i = 0; i < els.length; i++) {
                     if (els[i].closest('.monaco-editor') !== editor) continue;
@@ -145,8 +162,25 @@ internal fun MainActivity.injectTouchSelection() {
                     y: clamp(sd.y - sd.offY, box.top + 4, box.bottom - 4)
                 };
             }
+            // After a long press the word under the finger is selected. Dragging past either of its
+            // ends re-anchors at the opposite end, so the selection stretches both ways.
+            function reanchor() {
+                if (!sd || sd.mode !== 'press') return;
+                if (!sd.word) { sd.word = ends(sd.editor); if (!sd.word) return; sd.side = 0; }
+                var w = sd.word, x = sd.x - sd.offX, y = sd.y - sd.offY;
+                var before = y < w.sMid - 10 || (y < w.sy + 2 && x < w.sx);
+                var after = y > w.eMid + 10 || (y > w.ey - 2 && x > w.ex);
+                var side = before ? -1 : (after ? 1 : sd.side);
+                if (side === sd.side || side === 0) return;
+                sd.side = side;
+                if (sd.pen) { penMode(sd.lines, false); sd.pen = false; }
+                // Backwards: hold the word's end. Forwards: hold its start.
+                if (side < 0) dispatchOn(sd.lines, '-monaco-gesturetap', w.ex - 1, w.eMid, 1);
+                else dispatchOn(sd.lines, '-monaco-gesturetap', w.sx + 1, w.sMid, 1);
+            }
             function extend() {
                 if (!sd) return;
+                reanchor();
                 if (!sd.pen) { penMode(sd.lines, true); sd.pen = true; }
                 var at = aimAt();
                 dispatchOn(sd.lines, '-monaco-gesturechange', at.x, at.y, 1);
