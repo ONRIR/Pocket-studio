@@ -233,12 +233,12 @@ The site published from `docs/site` is not part of the app. It serves two typefa
 This file is provided for attribution purposes. For exact license texts, refer to the `LICENSE` files in each software's source repository. If you believe any attribution is missing or incorrect, please open an issue at https://github.com/rmyndharis/VSCodroid/issues.
 
 
-## Extensions bundled only in the C/C++ build (VSCandro-cpp-debug.apk)
+## Extensions bundled only in the C/C++ build (VSCodroid-Neo-cpp-debug.apk)
 
 Each is unmodified, from Open VSX, and carries its own LICENSE.txt inside its folder in the app.
 
 - clangd (llvm-vs-code-extensions.vscode-clangd 0.6.0), MIT.
-- Code Spell Checker (streetsidesoftware.code-spell-checker 4.10.0), GPL-3.0-or-later. Source: https://github.com/streetsidesoftware/vscode-spell-checker. It is shipped as published, unmodified, as a separate extension, and is not linked into VSCandro's own code.
+- Code Spell Checker (streetsidesoftware.code-spell-checker 4.10.0), GPL-3.0-or-later. Source: https://github.com/streetsidesoftware/vscode-spell-checker. It is shipped as published, unmodified, as a separate extension, and is not linked into VSCodroid Neo's own code.
 - Material Icon Theme (PKief.material-icon-theme 5.40.0), MIT.
 - Error Lens (usernamehw.errorlens 3.30.0), MIT.
 - CMake Tools (ms-vscode.cmake-tools 1.25.10), MIT.

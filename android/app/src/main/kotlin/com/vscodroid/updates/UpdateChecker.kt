@@ -22,7 +22,7 @@ data class UpdateRelease(
 )
 
 object UpdateChecker {
-    const val REPO = "ONRIR/VSCandro"
+    const val REPO = "ONRIR/VSCodroid-Neo"
     private const val API = "https://api.github.com/repos/$REPO/releases?per_page=30"
 
     /** Releases tagged build-N whose number is above [installed], oldest first, so the last one is the newest and the recommended one. */

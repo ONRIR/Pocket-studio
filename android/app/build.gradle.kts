@@ -162,7 +162,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.onrir.studio"
+        applicationId = "com.onrir.neo"
         minSdk = 29
         // Held at 36 on purpose, and lint's OldTargetApi is answered rather than
         // ignored. Targeting 37 blocks local network access by default, so a dev

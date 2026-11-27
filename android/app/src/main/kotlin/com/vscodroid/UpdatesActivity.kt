@@ -120,7 +120,7 @@ class UpdatesActivity : AppCompatActivity() {
 
     private fun apkFile(r: UpdateRelease): File {
         val base = getExternalFilesDir(null) ?: cacheDir
-        return File(File(base, "updates"), "VSCandro-${r.number}.apk")
+        return File(File(base, "updates"), "VSCodroid-Neo-${r.number}.apk")
     }
 
     private fun render() {

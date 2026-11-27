@@ -1,7 +1,7 @@
 # VSCodroid Neo
 
 **Modified from [VSCodroid](https://github.com/rmyndharis/VSCodroid) (MIT). Modifications made with AI.**
-The app is now named **VSCodroid Neo** (earlier builds were called VSCandro). The package id, the repository name and the APK file names stay the same so updates install over existing copies.
+The app is now named **VSCodroid Neo** (earlier builds were called VSCandro). It uses a new package id (com.onrir.neo), so it installs next to any older copy and does not update it.
 
 
 This repository is a fork of VSCodroid by Yudhi Armyndharis and the VSCodroid Community, used under the MIT License (see `LICENSE`, kept unchanged, and `NOTICE.md`). The changes in this fork (new app id and name, icons with an in-app icon switcher, touch text selection with handles, triple tap, two-finger context menu) were written with AI and have not had a full review. Everything else is upstream's work. Not affiliated with or endorsed by Microsoft or the VSCodroid project.
