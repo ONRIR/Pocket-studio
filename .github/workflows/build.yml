@@ -505,10 +505,10 @@ jobs:
               --notes "Not published. Built from ${GITHUB_REF_NAME} at ${GITHUB_SHA}. Test it, then publish this draft and merge the branch." --target "$GITHUB_SHA"
           fi
 
-      # A second release next to the normal one: the same app with the C/C++ toolchain ZIP inside
+      # A second APK in the same release as the normal one: the same app with the C/C++ toolchain ZIP inside
       # the APK, so installing C/C++ from the Toolchains screen needs no network. Same app id and
-      # signing key, so either release installs over the other and keeps the user's data. Tagged
-      # build-N-cpp, which the in-app Updates screen ignores (it lists build-N tags only).
+      # signing key, so either release installs over the other and keeps the user's data. The in-app
+      # Updates screen takes VSCandro-debug.apk from the release.
       - name: Build and publish the variant with C/C++ inside
         if: github.event_name == 'push' || inputs.replace_tag != ''
         env:
@@ -528,10 +528,10 @@ jobs:
           (cd android && ./gradlew assembleDebug)
           cp android/app/build/outputs/apk/debug/app-debug.apk VSCandro-cpp-debug.apk
           sha256sum VSCandro-cpp-debug.apk | tee VSCandro-cpp-debug.apk.sha256
+          # Both APKs live in the same release: the normal one first, then the one with C/C++ inside.
           if [ -n "${REPLACE_TAG:-}" ]; then
-            gh release upload "${REPLACE_TAG}-cpp" VSCandro-cpp-debug.apk VSCandro-cpp-debug.apk.sha256 --clobber
-            exit 0
+            tag="$REPLACE_TAG"
+          else
+            tag="build-${GITHUB_RUN_NUMBER}"
           fi
-          gh release create "build-${GITHUB_RUN_NUMBER}-cpp" VSCandro-cpp-debug.apk VSCandro-cpp-debug.apk.sha256 \
-            --title "VSCandro build $GITHUB_RUN_NUMBER with C/C++ inside" \
-            --notes "Same as build $GITHUB_RUN_NUMBER, plus the C/C++ toolchain (clang, from upstream VSCodroid v${ver}, SHA-256 checked) inside the APK. Open Toolchains and install C/C++ with no download. About 80 MB bigger." --target "$GITHUB_SHA"
+          gh release upload "$tag" VSCandro-cpp-debug.apk VSCandro-cpp-debug.apk.sha256 --clobber

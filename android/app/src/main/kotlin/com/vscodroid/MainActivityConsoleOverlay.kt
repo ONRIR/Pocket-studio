@@ -31,6 +31,8 @@ internal fun MainActivity.injectConsoleOverlay() {
             var ch = new BroadcastChannel('vscodroid-console');
             var root = null, bar, titleEl, body, out, foot, form, inp, handle, chip, probe;
             var runId = '', ended = false, minimized = false;
+            // The real terminal (xterm.js, served by the editor's own server). 0 = not tried, 1 = ready, -1 = unavailable.
+            var term = null, termEl = null, xtermState = 0;
             // Terminal model: rows of text, a cursor, enough of the escape sequences for ordinary output.
             var rows = [''], r = 0, c = 0, esc = '', MAXROWS = 3000;
             var pos = { left: 8, top: 0, width: 0, height: 0 };
@@ -59,6 +61,8 @@ internal fun MainActivity.injectConsoleOverlay() {
                     '#vscandro-console .vc-body{flex:1;min-height:0;overflow:auto;padding:6px 8px;touch-action:pan-x pan-y;' +
                     'user-select:text;-webkit-user-select:text}' +
                     '#vscandro-console pre{margin:0;font:13px/1.35 monospace;white-space:pre-wrap;word-break:break-all}' +
+                    '#vscandro-console .vc-term{flex:1;min-height:0;overflow:hidden;padding:2px 4px;background:#0c0c0c}' +
+                    '#vscandro-console .vc-term .xterm-viewport{background:#0c0c0c !important}' +
                     '#vscandro-console .vc-foot{flex:none;padding:4px 8px;font:13px monospace;color:#7fd37f;background:#161616}' +
                     '#vscandro-console form{flex:none;display:flex;border-top:1px solid #333}' +
                     '#vscandro-console input{flex:1;min-width:0;height:40px;border:0;outline:0;background:#161616;color:#fff;' +
@@ -90,6 +94,8 @@ internal fun MainActivity.injectConsoleOverlay() {
                 btn('\u2715', 'Close', function() { closeConsole(true); });
                 body = document.createElement('div'); body.className = 'vc-body';
                 out = document.createElement('pre'); body.appendChild(out);
+                termEl = document.createElement('div'); termEl.className = 'vc-term'; termEl.style.display = 'none';
+                termEl.addEventListener('click', function() { if (ended) { closeConsole(false); } else if (term) { term.focus(); } });
                 foot = document.createElement('div'); foot.className = 'vc-foot'; foot.style.display = 'none';
                 form = document.createElement('form');
                 inp = document.createElement('input');
@@ -98,7 +104,7 @@ internal fun MainActivity.injectConsoleOverlay() {
                 inp.placeholder = 'Type input, then Enter';
                 form.appendChild(inp);
                 handle = document.createElement('div'); handle.className = 'vc-grip';
-                root.appendChild(bar); root.appendChild(body); root.appendChild(foot); root.appendChild(form); root.appendChild(handle);
+                root.appendChild(bar); root.appendChild(body); root.appendChild(termEl); root.appendChild(foot); root.appendChild(form); root.appendChild(handle);
                 document.documentElement.appendChild(root);
                 chip = document.createElement('div'); chip.id = 'vscandro-chip';
                 chip.addEventListener('click', function() { setMinimized(false); });
@@ -168,15 +174,17 @@ internal fun MainActivity.injectConsoleOverlay() {
                 var rect = probe.getBoundingClientRect();
                 var cw = rect.width / 20 || 8;
                 var lh = 13 * 1.35;
-                var cols = Math.max(20, Math.floor((body.clientWidth - 16) / cw));
-                var rws = Math.max(5, Math.floor(body.clientHeight / lh));
+                var area = (term && termEl.clientHeight) ? termEl : body;
+                var pad = (area === termEl) ? 8 : 16;
+                var cols = Math.max(20, Math.floor((area.clientWidth - pad) / cw));
+                var rws = Math.max(5, Math.floor((area.clientHeight - (area === termEl ? 4 : 0)) / lh));
                 return { cols: cols, rows: rws };
             }
             var sizeTimer = 0;
             function reportSize() {
                 if (!runId) return;
                 clearTimeout(sizeTimer);
-                sizeTimer = setTimeout(function() { var m = metrics(); send('resize', { cols: m.cols, rows: m.rows }); }, 150);
+                sizeTimer = setTimeout(function() { var m = metrics(); if (term) { try { term.resize(m.cols, m.rows); } catch (x) {} } send('resize', { cols: m.cols, rows: m.rows }); }, 150);
             }
             function send(type, extra) {
                 if (!runId) return;
@@ -230,6 +238,7 @@ internal fun MainActivity.injectConsoleOverlay() {
                 }
             }
             function feed(text) {
+                if (term) { term.write(text); return; }
                 for (var i = 0; i < text.length; i++) {
                     var ch1 = text.charAt(i);
                     if (esc) {
@@ -266,6 +275,53 @@ internal fun MainActivity.injectConsoleOverlay() {
                 });
             }
 
+            function loadXterm(done) {
+                var base = '/static/node_modules/@xterm/xterm/';
+                var settled = false;
+                // The editor's AMD loader would take the library as a module and leave no global behind,
+                // so it is hidden while the script runs.
+                var savedDefine = window.define;
+                try { window.define = undefined; } catch (x) {}
+                function fin(ok) {
+                    if (settled) return;
+                    settled = true;
+                    try { window.define = savedDefine; } catch (x) {}
+                    xtermState = ok ? 1 : -1;
+                    done();
+                }
+                try {
+                    var css = document.createElement('link');
+                    css.rel = 'stylesheet'; css.href = base + 'css/xterm.css';
+                    document.head.appendChild(css);
+                    var sc = document.createElement('script');
+                    sc.src = base + 'lib/xterm.js';
+                    sc.onload = function() { fin(typeof window.Terminal === 'function'); };
+                    sc.onerror = function() { fin(false); };
+                    document.head.appendChild(sc);
+                    setTimeout(function() { fin(typeof window.Terminal === 'function'); }, 6000);
+                } catch (x) { fin(false); }
+            }
+            function useTerm() {
+                if (xtermState !== 1) { term = null; termEl.style.display = 'none'; body.style.display = ''; form.style.display = ''; return; }
+                body.style.display = 'none'; form.style.display = 'none'; termEl.style.display = 'block';
+                if (!term) {
+                    term = new window.Terminal({
+                        cursorBlink: true, fontSize: 13, fontFamily: 'monospace', scrollback: 3000,
+                        allowProposedApi: true, convertEol: false,
+                        theme: { background: '#0c0c0c', foreground: '#e6e6e6' }
+                    });
+                    term.open(termEl);
+                    term.onData(function(d) {
+                        if (ended) { closeConsole(false); return; }
+                        send('input', { data: d });
+                    });
+                }
+                term.reset();
+            }
+            function startTerm(done) {
+                if (xtermState === 0) { loadXterm(function() { useTerm(); done(); }); }
+                else { useTerm(); done(); }
+            }
             ch.onmessage = function(e) {
                 var d = e.data;
                 if (!d || typeof d.type !== 'string') return;
@@ -289,8 +345,14 @@ internal fun MainActivity.injectConsoleOverlay() {
                     chip.style.display = 'none';
                     root.style.display = 'flex';
                     place();
-                    var m = metrics();
-                    ch.postMessage({ type: 'opened', id: runId, cols: m.cols, rows: m.rows });
+                    var openId = runId;
+                    startTerm(function() {
+                        if (runId !== openId) return;
+                        place();
+                        var m = metrics();
+                        if (term) { try { term.resize(m.cols, m.rows); term.focus(); } catch (x) {} }
+                        ch.postMessage({ type: 'opened', id: runId, cols: m.cols, rows: m.rows });
+                    });
                     return;
                 }
                 if (String(d.id) !== runId) return;

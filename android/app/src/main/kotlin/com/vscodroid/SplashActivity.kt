@@ -781,12 +781,31 @@ class SplashActivity : AppCompatActivity() {
         // the delete and returns, so it was never going to free bytes in time for
         // a pre-flight that had already read them.
         repair("the delivered toolchain reconcile") { ToolchainManager(applicationContext).reconcileDeliveredPacks() }
-        if (shouldShowPicker()) {
+        if (shouldAutoInstallBundledCpp()) {
+            // The build with C/C++ inside the APK: there is nothing to choose, so it installs itself
+            // from the bundled ZIP, once, with no network.
+            Logger.i(tag, "C/C++ is inside this APK and not installed; installing it")
+            getSharedPreferences("vscodroid", MODE_PRIVATE).edit().putBoolean("bundled_cpp_auto", true).apply()
+            startDownloads(listOf("toolchain_cpp"))
+        } else if (shouldShowPicker()) {
             Logger.i(tag, "The toolchain picker has not been answered yet; offering it")
             showToolchainPicker()
         } else {
             launchMain()
         }
+    }
+
+    private fun shouldAutoInstallBundledCpp(): Boolean {
+        if (downloadQueueRunning) return false
+        if (getSharedPreferences("vscodroid", MODE_PRIVATE).getBoolean("bundled_cpp_auto", false)) return false
+        val bundled = try {
+            assets.open("toolchains/toolchain_cpp.zip").close()
+            true
+        } catch (e: java.io.IOException) {
+            false
+        }
+        if (!bundled) return false
+        return notYetInstalled(listOf("toolchain_cpp"), ToolchainManager(applicationContext).getInstalledToolchains()).isNotEmpty()
     }
 
     private fun shouldShowPicker(): Boolean {

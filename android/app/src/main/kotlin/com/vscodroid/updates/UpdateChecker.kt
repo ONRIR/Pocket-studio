@@ -106,10 +106,10 @@ object UpdateChecker {
             for (j in 0 until assets.length()) {
                 val a = assets.getJSONObject(j)
                 val name = a.optString("name")
-                if (name.endsWith(".apk") && apkUrl == null) {
+                if (name.endsWith(".apk") && !name.contains("cpp") && apkUrl == null) {
                     apkUrl = a.optString("browser_download_url")
                     apkSize = a.optLong("size")
-                } else if (name.endsWith(".apk.sha256")) {
+                } else if (name.endsWith(".apk.sha256") && !name.contains("cpp")) {
                     shaUrl = a.optString("browser_download_url")
                 }
             }
