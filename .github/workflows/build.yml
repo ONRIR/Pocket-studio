@@ -470,9 +470,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cp android/app/build/outputs/apk/debug/app-debug.apk PocketStudio-debug.apk
-          sha256sum PocketStudio-debug.apk | tee PocketStudio-debug.apk.sha256
+          cp android/app/build/outputs/apk/debug/app-debug.apk VSCandro-debug.apk
+          sha256sum VSCandro-debug.apk | tee VSCandro-debug.apk.sha256
           tag="build-${GITHUB_RUN_NUMBER}"
-          gh release create "$tag" PocketStudio-debug.apk PocketStudio-debug.apk.sha256 \
+          gh release create "$tag" VSCandro-debug.apk VSCandro-debug.apk.sha256 \
             --title "Pocket Studio debug build $GITHUB_RUN_NUMBER" \
             --notes "Debug-signed APK ($GITHUB_SHA). Package com.onrir.studio.debug." --target "$GITHUB_SHA"
