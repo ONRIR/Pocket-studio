@@ -1,7 +1,7 @@
 // @ts-check
 
 /**
- * VSCandro SAF Bridge Extension (Browser)
+ * VSCodroid Neo SAF Bridge Extension (Browser)
  *
  * Runs in the Web Extension Host (Web Worker) and communicates with the
  * AndroidBridge in the main WebView page via BroadcastChannel relay.
@@ -343,8 +343,8 @@ function activate(context) {
                     // added the old one to.
                     vscode.window.showInformationMessage(
                         result.existed
-                            ? vscode.l10n.t('An SSH key is already set up at ~/.ssh/id_ed25519. Run "VSCandro: Copy SSH Public Key" to add it to your Git host.')
-                            : vscode.l10n.t('SSH key created at ~/.ssh/id_ed25519. Run "VSCandro: Copy SSH Public Key" to add it to your Git host.')
+                            ? vscode.l10n.t('An SSH key is already set up at ~/.ssh/id_ed25519. Run "VSCodroid Neo: Copy SSH Public Key" to add it to your Git host.')
+                            : vscode.l10n.t('SSH key created at ~/.ssh/id_ed25519. Run "VSCodroid Neo: Copy SSH Public Key" to add it to your Git host.')
                     );
                 } else {
                     vscode.window.showErrorMessage(
@@ -369,7 +369,7 @@ function activate(context) {
                 const pubKey = /** @type {string} */ (await sendBridgeCommand('getSshPublicKey'));
                 if (!pubKey || !pubKey.trim()) {
                     vscode.window.showWarningMessage(
-                        vscode.l10n.t('No SSH key yet. Run "VSCandro: Generate SSH Key" first.')
+                        vscode.l10n.t('No SSH key yet. Run "VSCodroid Neo: Generate SSH Key" first.')
                     );
                     return;
                 }
@@ -525,7 +525,7 @@ function activate(context) {
 
                 if (mirrors.length === 0) {
                     vscode.window.showInformationMessage(
-                        vscode.l10n.t('No device folders have been copied into VSCandro yet.')
+                        vscode.l10n.t('No device folders have been copied into VSCodroid Neo yet.')
                     );
                     return;
                 }
@@ -562,12 +562,12 @@ function activate(context) {
                 const size = formatBytes(Number(m.bytes) || 0);
                 const message = m.name
                     ? vscode.l10n.t(
-                        "Remove VSCandro's local copy of {0} and free {1}? THIS DELETES FILES. The copy may hold files that have not reached the device folder. Stop terminals and other work using it, and save anything you need elsewhere before continuing. This cannot be undone.",
+                        "Remove VSCodroid Neo's local copy of {0} and free {1}? THIS DELETES FILES. The copy may hold files that have not reached the device folder. Stop terminals and other work using it, and save anything you need elsewhere before continuing. This cannot be undone.",
                         m.name,
                         size
                     )
                     : vscode.l10n.t(
-                        "Remove VSCandro's local copy of this folder and free {0}? THIS DELETES FILES. The copy may hold files that have not reached the device folder. Stop terminals and other work using it, and save anything you need elsewhere before continuing. This cannot be undone.",
+                        "Remove VSCodroid Neo's local copy of this folder and free {0}? THIS DELETES FILES. The copy may hold files that have not reached the device folder. Stop terminals and other work using it, and save anything you need elsewhere before continuing. This cannot be undone.",
                         size
                     );
                 const removeBtn = vscode.l10n.t('Remove');
@@ -661,7 +661,7 @@ function activate(context) {
                 // no height, which is a phone in landscape.
                 vscode.window.showInformationMessage(
                     hidden
-                        ? vscode.l10n.t('Extra key row hidden. Run "VSCandro: Toggle Extra Key Row" again to bring it back.')
+                        ? vscode.l10n.t('Extra key row hidden. Run "VSCodroid Neo: Toggle Extra Key Row" again to bring it back.')
                         : vscode.l10n.t('Extra key row shown. It appears above the keyboard while you type, when the screen has room for it.')
                 );
             } catch (/** @type {*} */ err) {
@@ -778,7 +778,7 @@ function activate(context) {
                 // Empty only when the bridge refused the session token.
                 if (!report) {
                     throw new Error(
-                        vscode.l10n.t('VSCandro did not accept the request. Reload the window and try again.')
+                        vscode.l10n.t('VSCodroid Neo did not accept the request. Reload the window and try again.')
                     );
                 }
                 // Plain text, so the editor does not run language detection on it.
@@ -936,7 +936,7 @@ function activate(context) {
         const dontAskAgainBtn = vscode.l10n.t("Don't Ask Again");
         const action = await vscode.window.showInformationMessage(
             vscode.l10n.t(
-                'This device folder is shown as {0}, the name of its copy in VSCandro. Reopen it as {1}?',
+                'This device folder is shown as {0}, the name of its copy in VSCodroid Neo. Reopen it as {1}?',
                 hash,
                 name
             ),
@@ -1088,7 +1088,7 @@ function activate(context) {
             if (await startInConsole(runner.command(shellQuote(document.uri.path)), cwdForConsole, title)) return;
             if (superseded()) return;
         }
-        const runTerminal = vscode.l10n.t('VSCandro Run');
+        const runTerminal = vscode.l10n.t('VSCodroid Neo Run');
         vscode.window.terminals.find((t) => t.name === runTerminal)?.dispose();
         const terminal = vscode.window.createTerminal({
             name: runTerminal,
@@ -1395,7 +1395,7 @@ function storageLabel(key) {
  *
  * Decimal, matching the app's own StorageManager.formatSize and the phone's
  * storage screen. This screen's total is the one figure a user can hold beside
- * Settings > Apps > VSCandro > Storage, so it has to be counted the same way.
+ * Settings > Apps > VSCodroid Neo > Storage, so it has to be counted the same way.
  * @param {number} bytes
  * @returns {string}
  */

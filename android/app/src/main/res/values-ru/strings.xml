@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">VSCandro</string>
-    <string name="notification_channel_name">Сервер VSCandro</string>
+    <string name="app_name">VSCodroid Neo</string>
+    <string name="notification_channel_name">Сервер VSCodroid Neo</string>
     <string name="notification_channel_description">Поддерживает работу локального сервера разработки</string>
-    <string name="notification_title">VSCandro работает</string>
+    <string name="notification_title">VSCodroid Neo работает</string>
     <!-- The card the service puts up while first-run setup unpacks. Its own pair
          rather than the server's, because no server is running yet and the whole
          point of the hold is that the process survives a user who leaves. -->
-    <string name="notification_title_setup">VSCandro выполняет настройку</string>
+    <string name="notification_title_setup">VSCodroid Neo выполняет настройку</string>
     <string name="notification_text_setup">Идёт распаковка редактора и его инструментов. Это занимает несколько минут.</string>
     <string name="notification_text">Локальный сервер разработки активен</string>
     <!-- There was a second line here, shown when the server was adopted rather
@@ -25,7 +25,7 @@
     <!-- Shown once the automatic restart budget is spent. Replaces the two
          strings above in the same notification, which then carries no Stop
          action because there is nothing left to stop. -->
-    <string name="notification_title_stopped">Сервер VSCandro остановлен</string>
+    <string name="notification_title_stopped">Сервер VSCodroid Neo остановлен</string>
     <string name="notification_text_stopped">Сервер несколько раз аварийно завершался. Перезапустите приложение.</string>
     <string name="extracting_message">Извлечение основных файлов\u2026</string>
 
@@ -70,7 +70,7 @@
          about to become reachable again, and a user who is not told which
          setting to look for has nothing to search on. -->
     <string name="heap_override_suspended">Пользовательский предел памяти в settings.json отключён после повторяющихся сбоев. Измените vscodroid.server.heapCeilingMb и перезапустите приложение, чтобы попробовать другое значение.</string>
-    <string name="notice_editor_away_from_home">Ваши настройки и входы в аккаунты не загрузились, потому что порт %1$d занят другим приложением. Они в сохранности: закройте это приложение, нажмите «Остановить сервер» (или остановите VSCandro через его уведомление) и снова откройте VSCandro.</string>
+    <string name="notice_editor_away_from_home">Ваши настройки и входы в аккаунты не загрузились, потому что порт %1$d занят другим приложением. Они в сохранности: закройте это приложение, нажмите «Остановить сервер» (или остановите VSCodroid Neo через его уведомление) и снова откройте VSCodroid Neo.</string>
     <!-- The figure is passed in rather than written here, and it is the
          SHORTFALL the refusal measured, not the size of the unpack: this asks
          the user to free it, and what they have to free is what the device is
@@ -151,11 +151,11 @@
     <string name="server_starting">Запуск сервера…</string>
     <!-- Shown on the page, with the reload control, once the editor's renderer
          has died several times in a minute and the app stops reopening it. -->
-    <string name="error_renderer_crash_loop">Редактор несколько раз подряд неожиданно закрывался, поэтому VSCandro перестал открывать его заново. Ваши файлы и сервер не затронуты. Это случается реже, если сначала закрыть другие приложения.</string>
-    <string name="legal_disclaimer">VSCandro собран из исходного кода Code - OSS под лицензией MIT.\nНе связан с Microsoft Corporation и не одобрен ею.\n«Visual Studio Code» и «VS Code» являются товарными знаками Microsoft.\nИспользуется реестр расширений Open VSX, а не Microsoft Marketplace.</string>
+    <string name="error_renderer_crash_loop">Редактор несколько раз подряд неожиданно закрывался, поэтому VSCodroid Neo перестал открывать его заново. Ваши файлы и сервер не затронуты. Это случается реже, если сначала закрыть другие приложения.</string>
+    <string name="legal_disclaimer">VSCodroid Neo собран из исходного кода Code - OSS под лицензией MIT.\nНе связан с Microsoft Corporation и не одобрен ею.\n«Visual Studio Code» и «VS Code» являются товарными знаками Microsoft.\nИспользуется реестр расширений Open VSX, а не Microsoft Marketplace.</string>
 
     <!-- About dialog -->
-    <string name="about_title">О программе VSCandro</string>
+    <string name="about_title">О программе VSCodroid Neo</string>
     <string name="about_version_format">Версия %s</string>
     <string name="about_licenses">Лицензии</string>
     <string name="licenses_title">Лицензии открытого кода</string>
@@ -237,7 +237,7 @@
     <!-- Shown when a save could not be written out to the device folder. Names the
          consequence rather than the error: the user's next decision is whether to
          copy the file out before uninstalling, not which exception was thrown. -->
-    <string name="saf_write_back_failed">Не удалось сохранить %1$s в папку на устройстве. Единственная копия остаётся внутри VSCandro.</string>
+    <string name="saf_write_back_failed">Не удалось сохранить %1$s в папку на устройстве. Единственная копия остаётся внутри VSCodroid Neo.</string>
 
     <!-- Shown once after a folder opens when documents in it could not be copied into
          the editor: a provider error, or no room left. The opposite of
@@ -262,7 +262,7 @@
          because it holds documents that never reached the editor and deleting the
          directory would have taken them with it. Names the device as where the files
          are: the local copy is gone, so saf_write_back_failed's "the only copy is
-         inside VSCandro" would be backwards here. -->
+         inside VSCodroid Neo" would be backwards here. -->
     <string name="saf_directory_kept">Папка %1$s оставлена в папке на устройстве: в ней есть файлы, которые не были скопированы в редактор. Удалите её там, если они больше не нужны.</string>
 
     <!-- The same refusal one level down: a single document that never reached the
@@ -331,7 +331,7 @@
     <!-- The widest of the three. A write-back drain outlives the folder switch that
          stopped it and can still be streaming out of the copy, so a restart is what
          makes the copy safe to remove rather than closing the folder. -->
-    <string name="saf_mirror_folder_this_session">Эта папка была открыта в текущем сеансе. Перезапустите VSCandro, затем удалите её.</string>
+    <string name="saf_mirror_folder_this_session">Эта папка была открыта в текущем сеансе. Перезапустите VSCodroid Neo, затем удалите её.</string>
 
     <!-- Reasons a bridge call did not do what it was asked. These are returned to the
          page and rendered by the bundled extension's showErrorMessage, which is the
@@ -341,31 +341,31 @@
     <!-- The caller's session token did not match. Used by both the external-URL and
          the folder-removal calls; one string because it is one situation and one
          instruction. -->
-    <string name="bridge_stale_session">VSCandro не принял запрос. Перезагрузите окно и повторите попытку.</string>
+    <string name="bridge_stale_session">VSCodroid Neo не принял запрос. Перезагрузите окно и повторите попытку.</string>
     <!-- Too many storage commands already outstanding. The four that walk the disk share
          one thread with a bounded queue, so this is a wait and not a fault, and it needs
          its own sentence: bridge_stale_session above tells the reader to reload the
          window, which does not drain that thread and costs them their editor state on the
          way to waiting exactly as long. Named by AndroidBridge.STORAGE_BUSY. -->
-    <string name="bridge_storage_busy">VSCandro занят другим запросом к хранилищу. Повторите попытку чуть позже.</string>
+    <string name="bridge_storage_busy">VSCodroid Neo занят другим запросом к хранилищу. Повторите попытку чуть позже.</string>
     <!-- No Activity wired the removal callback, so nothing could have been removed.
          Distinct from a refusal with a reason: this is a mistake in the app rather
          than a state the user can act on, and saying "that folder is in use" would
          send them looking for a folder to close. -->
-    <string name="bridge_reclaim_unavailable">Сейчас VSCandro не может управлять хранилищем папок устройства.</string>
+    <string name="bridge_reclaim_unavailable">Сейчас VSCodroid Neo не может управлять хранилищем папок устройства.</string>
     <!-- Nothing on the device claimed the link. The one refusal the user can act on. -->
-    <string name="open_url_no_handler">VSCandro не открыл ссылку: на этом устройстве нет приложения для таких ссылок.</string>
+    <string name="open_url_no_handler">VSCodroid Neo не открыл ссылку: на этом устройстве нет приложения для таких ссылок.</string>
     <!-- Every other launch failure, with the class name of the exception substituted. The
          class name and never its message: ActivityNotFoundException quotes the whole
          Intent and FileUriExposedException quotes the file, so the message would hand
          the address back to the page that supplied it. -->
-    <string name="open_url_failed">VSCandro не смог открыть эту ссылку: %1$s</string>
+    <string name="open_url_failed">VSCodroid Neo не смог открыть эту ссылку: %1$s</string>
 
     <!-- A folder copied out to the device that did not arrive whole. Counts entries
          rather than naming them, because the failure is usually folder-wide and forty
          separate notices is another way of telling the user nothing. Deliberately not
          worded like saf_write_back_failed: most of the folder did arrive, so "the only
-         copy is inside VSCandro" would overstate. Also said once when a folder opens, for
+         copy is inside VSCodroid Neo" would overstate. Also said once when a folder opens, for
          the files only the app's copy holds that the open tried to send and could not. -->
     <plurals name="saf_upload_incomplete">
         <item quantity="one">%2$s: %1$d объект не попал в папку на устройстве.</item>
@@ -376,7 +376,7 @@
     <!-- The same folder stopped by the enumeration cap rather than by a refusal. Named
          separately because the cause is a limit this app chose, not the device saying
          no, and the user's next move is to copy the rest out by hand. -->
-    <string name="saf_upload_capped">Папка %1$s слишком велика, чтобы скопировать её целиком. Остальное осталось внутри VSCandro.</string>
+    <string name="saf_upload_capped">Папка %1$s слишком велика, чтобы скопировать её целиком. Остальное осталось внутри VSCodroid Neo.</string>
     <!-- Files only the app's copy holds that an open keeps inside the app because it cannot
          tell them from a document deleted in the device folder: an earlier version may have
          lost its note of them, or the folder lists as empty, or its record cannot be read.
@@ -385,16 +385,16 @@
          the device, which saving again does not send. Saving a kept file again in the editor
          does send it. The string is for one file (%1$s the folder, %2$s the file); the plural
          is used for two or more and names the first of them (%3$s). -->
-    <string name="saf_file_kept_in_app">%1$s: файл %2$s остаётся только в VSCandro, потому что его могли удалить в папке на устройстве. Чтобы отправить его туда, сохраните его снова.</string>
+    <string name="saf_file_kept_in_app">%1$s: файл %2$s остаётся только в VSCodroid Neo, потому что его могли удалить в папке на устройстве. Чтобы отправить его туда, сохраните его снова.</string>
     <plurals name="saf_files_kept_in_app">
-        <item quantity="one">%2$s: %1$d файл, среди них %3$s, остаётся только в VSCandro, потому что их могли удалить в папке на устройстве. Чтобы отправить файл туда, сохраните его снова.</item>
-        <item quantity="few">%2$s: %1$d файла, среди них %3$s, остаются только в VSCandro, потому что их могли удалить в папке на устройстве. Чтобы отправить файл туда, сохраните его снова.</item>
-        <item quantity="many">%2$s: %1$d файлов, среди них %3$s, остаются только в VSCandro, потому что их могли удалить в папке на устройстве. Чтобы отправить файл туда, сохраните его снова.</item>
-        <item quantity="other">%2$s: %1$d файла, среди них %3$s, остаются только в VSCandro, потому что их могли удалить в папке на устройстве. Чтобы отправить файл туда, сохраните его снова.</item>
+        <item quantity="one">%2$s: %1$d файл, среди них %3$s, остаётся только в VSCodroid Neo, потому что их могли удалить в папке на устройстве. Чтобы отправить файл туда, сохраните его снова.</item>
+        <item quantity="few">%2$s: %1$d файла, среди них %3$s, остаются только в VSCodroid Neo, потому что их могли удалить в папке на устройстве. Чтобы отправить файл туда, сохраните его снова.</item>
+        <item quantity="many">%2$s: %1$d файлов, среди них %3$s, остаются только в VSCodroid Neo, потому что их могли удалить в папке на устройстве. Чтобы отправить файл туда, сохраните его снова.</item>
+        <item quantity="other">%2$s: %1$d файла, среди них %3$s, остаются только в VSCodroid Neo, потому что их могли удалить в папке на устройстве. Чтобы отправить файл туда, сохраните его снова.</item>
     </plurals>
     <!-- Shown once when sending what a program changed while a device folder opened stopped
          partway. What was not sent is one of three things, and the sentence covers each: a
-         save that stays inside VSCandro, a deletion the device did not make, and a rename it
+         save that stays inside VSCodroid Neo, a deletion the device did not make, and a rename it
          did not make. The folder already open, whose watcher a failed switch to another
          folder put back, has a sentence of its own, saf_switch_changes_unsent: it did not
          open then. -->
@@ -444,7 +444,7 @@
          updated, rather than because it is being installed for the first time.
          Distinct from extracting_message so that a user who did not expect a
          wait learns why there is one. -->
-    <string name="status_updating_app">Обновление VSCandro…</string>
+    <string name="status_updating_app">Обновление VSCodroid Neo…</string>
 
     <!-- Opening a device folder. The sync can take a while on a large folder and
          the dialog is not cancellable, so it has to say what is happening.
@@ -523,7 +523,7 @@
     <!-- Shown once on the launch after a crash. The report is quoted into the
          message because the audience is developers, and truncated by the caller
          before it arrives. -->
-    <string name="crash_title">Сбой VSCandro</string>
+    <string name="crash_title">Сбой VSCodroid Neo</string>
     <string name="crash_message">В прошлом сеансе произошёл сбой приложения.\n\n%1$s</string>
     <string name="crash_dismiss">Закрыть</string>
     <string name="crash_copy_report">Копировать отчёт</string>
@@ -533,7 +533,7 @@
          quoted exactly as the palette lists it because the reader's next action
          is to type it, and it is the one part of this sentence a translator must
          leave in English. -->
-    <string name="storage_low_warning">Мало места (доступно %1$s). Выполните «VSCandro: Manage Device Folder Storage» из палитры команд.</string>
+    <string name="storage_low_warning">Мало места (доступно %1$s). Выполните «VSCodroid Neo: Manage Device Folder Storage» из палитры команд.</string>
 
     <!-- An Android System WebView older than the one this app is tested against.
          Both versions are arguments: the installed one is read off the device and
@@ -545,7 +545,7 @@
          changes when it does, and passing it as a number invites a translator to
          treat "%2$s or newer" as a count to inflect. -->
     <string name="webview_below_minimum_title">Android System WebView устарел</string>
-    <string name="webview_below_minimum">На этом устройстве установлен Android System WebView версии %1$s. VSCandro нужна версия %2$s или новее: в более старой предпросмотр Markdown и панели расширений, например чат, остаются пустыми. Обновите Android System WebView в Play Store.</string>
+    <string name="webview_below_minimum">На этом устройстве установлен Android System WebView версии %1$s. VSCodroid Neo нужна версия %2$s или новее: в более старой предпросмотр Markdown и панели расширений, например чат, остаются пустыми. Обновите Android System WebView в Play Store.</string>
     <string name="webview_update">Обновить</string>
 
     <!-- The extra key row, all of it spoken rather than drawn.
@@ -684,5 +684,5 @@
          one English word survived inside an otherwise translated About dialog. -->
     <string name="about_version_unknown">неизвестно</string>
     <string name="saf_folder_unavailable">Локальная копия этой папки на устройстве больше недоступна. Откройте папку с устройства снова.</string>
-    <string name="saf_workspace_multiple_folders">Это рабочее пространство охватывает несколько папок устройства. Одновременно синхронизируется только одна папка устройства; изменения в остальных остаются внутри VSCandro, пока эти папки не будут открыты напрямую.</string>
+    <string name="saf_workspace_multiple_folders">Это рабочее пространство охватывает несколько папок устройства. Одновременно синхронизируется только одна папка устройства; изменения в остальных остаются внутри VSCodroid Neo, пока эти папки не будут открыты напрямую.</string>
 </resources>

@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCandro Im Netzwerk bereitstellen",
+  "displayName": "VSCodroid Neo Im Netzwerk bereitstellen",
   "description": "Zeigt die Adresse, unter der andere Geräte einen Entwicklungsserver auf diesem Gerät erreichen",
-  "command.serveOnNetwork": "VSCandro: Im Netzwerk bereitstellen"
+  "command.serveOnNetwork": "VSCodroid Neo: Im Netzwerk bereitstellen"
 }

@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCandro エディターのメニュー",
+  "displayName": "VSCodroid Neo エディターのメニュー",
   "description": "エディターのコンテキスト メニューに追加する項目",
   "command.selectAll": "すべてを選択"
 }

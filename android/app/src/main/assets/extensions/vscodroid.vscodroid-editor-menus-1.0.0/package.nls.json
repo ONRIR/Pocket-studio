@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCandro Editor Menus",
+  "displayName": "VSCodroid Neo Editor Menus",
   "description": "Extra entries for the editor context menu",
   "command.selectAll": "Select All"
 }

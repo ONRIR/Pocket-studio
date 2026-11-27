@@ -273,7 +273,7 @@ internal class ToolchainHttpDownloader(private val manager: ToolchainManager) {
         }
     }
 
-    /** Where a build that carries a toolchain inside the APK keeps its ZIP (VSCandro bundled variant). */
+    /** Where a build that carries a toolchain inside the APK keeps its ZIP (VSCodroid Neo bundled variant). */
     fun bundledZipPath(packName: String) = "toolchains/$packName.zip"
 
     fun hasBundledZip(packName: String): Boolean = try {

@@ -492,7 +492,7 @@ jobs:
           if [ "$GITHUB_EVENT_NAME" = push ]; then
             tag="build-${GITHUB_RUN_NUMBER}"
             gh release create "$tag" VSCandro-debug.apk VSCandro-debug.apk.sha256 \
-              --title "VSCandro build $GITHUB_RUN_NUMBER" \
+              --title "VSCodroid Neo build $GITHUB_RUN_NUMBER" \
               --notes "$(git log -1 --format=%B "$GITHUB_SHA" | head -c 1500)" --target "$GITHUB_SHA"
           elif [ -n "${REPLACE_TAG:-}" ]; then
             gh release upload "$REPLACE_TAG" VSCandro-debug.apk VSCandro-debug.apk.sha256 --clobber

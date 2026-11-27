@@ -29,7 +29,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
- * VSCandro updates screen (added in this fork).
+ * VSCodroid Neo updates screen (added in this fork).
  *
  * Never updates by itself. It asks GitHub for the fork's releases only when the user taps
  * "Check for updates", lists every newer build with its notes and the download size, and
@@ -73,7 +73,7 @@ class UpdatesActivity : AppCompatActivity() {
             setPadding(0, dp(4), 0, dp(12))
         })
         root.addView(TextView(this).apply {
-            text = "VSCandro never updates by itself and never checks in the background. " +
+            text = "VSCodroid Neo never updates by itself and never checks in the background. " +
                 "Tap the button below to look for new versions. You see the size before anything downloads."
             setPadding(0, 0, 0, dp(12))
         })
@@ -141,10 +141,10 @@ class UpdatesActivity : AppCompatActivity() {
         }
         if (upstream.isNotEmpty()) {
             list.addView(TextView(this).apply {
-                text = "Released by the original developer (VSCodroid), not built for VSCandro yet. " +
+                text = "Released by the original developer (VSCodroid), not built for VSCodroid Neo yet. " +
                     "These are only listed so you can read what is new. They are not downloaded here, " +
                     "because the original builds carry another signature and none of our changes. " +
-                    "Each one appears above as a normal update once VSCandro has been built from it."
+                    "Each one appears above as a normal update once VSCodroid Neo has been built from it."
                 setPadding(0, dp(16), 0, dp(8))
             })
             upstream.forEach { u ->
@@ -254,7 +254,7 @@ class UpdatesActivity : AppCompatActivity() {
 
     private fun install(file: File) {
         if (!packageManager.canRequestPackageInstalls()) {
-            Toast.makeText(this, "Allow VSCandro to install apps, then come back and tap Install again.", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Allow VSCodroid Neo to install apps, then come back and tap Install again.", Toast.LENGTH_LONG).show()
             startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, Uri.parse("package:$packageName")))
             return
         }

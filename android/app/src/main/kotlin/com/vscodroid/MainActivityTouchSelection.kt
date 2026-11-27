@@ -1,7 +1,7 @@
 package com.vscodroid
 
 /**
- * VSCandro touch selection (added in this fork, injected like the other page scripts).
+ * VSCodroid Neo touch selection (added in this fork, injected like the other page scripts).
  *
  * - Long press (about 0.45 s, finger still): selects the word under the finger and puts two
  *   round handles on the ends of the selection. Dragging the same finger on, before lifting,

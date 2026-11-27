@@ -6,7 +6,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 /**
- * VSCandro update source (added in this fork). Reads the releases of the fork's own GitHub
+ * VSCodroid Neo update source (added in this fork). Reads the releases of the fork's own GitHub
  * repository. It only runs when the user opens the Updates screen and taps Check; nothing
  * here runs in the background, and nothing is downloaded without a tap.
  */
@@ -33,7 +33,7 @@ object UpdateChecker {
             conn.connectTimeout = 15000
             conn.readTimeout = 20000
             conn.setRequestProperty("Accept", "application/vnd.github+json")
-            conn.setRequestProperty("User-Agent", "VSCandro")
+            conn.setRequestProperty("User-Agent", "VSCodroid Neo")
             val code = conn.responseCode
             if (code != 200) throw IOException("GitHub answered HTTP $code")
             val text = conn.inputStream.bufferedReader().use { it.readText() }
@@ -71,7 +71,7 @@ object UpdateChecker {
             conn.connectTimeout = 15000
             conn.readTimeout = 20000
             conn.setRequestProperty("Accept", "application/vnd.github+json")
-            conn.setRequestProperty("User-Agent", "VSCandro")
+            conn.setRequestProperty("User-Agent", "VSCodroid Neo")
             if (conn.responseCode != 200) throw IOException("GitHub answered HTTP ${conn.responseCode}")
             val arr = JSONArray(conn.inputStream.bufferedReader().use { it.readText() })
             val out = ArrayList<UpdateRelease>()

@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCandro 在网络上提供服务",
+  "displayName": "VSCodroid Neo 在网络上提供服务",
   "description": "显示其他设备可以用来访问本设备上开发服务器的地址",
-  "command.serveOnNetwork": "VSCandro: 在网络上提供服务"
+  "command.serveOnNetwork": "VSCodroid Neo: 在网络上提供服务"
 }

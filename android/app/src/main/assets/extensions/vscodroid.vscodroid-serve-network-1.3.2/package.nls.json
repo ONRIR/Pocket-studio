@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCandro Serve on Network",
+  "displayName": "VSCodroid Neo Serve on Network",
   "description": "Shows the address other devices can use to reach a dev server running on this device",
-  "command.serveOnNetwork": "VSCandro: Serve on Network"
+  "command.serveOnNetwork": "VSCodroid Neo: Serve on Network"
 }

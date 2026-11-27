@@ -39,7 +39,7 @@ object UpdateDownloader {
             conn.connectTimeout = 20000
             conn.readTimeout = 30000
             conn.instanceFollowRedirects = true
-            conn.setRequestProperty("User-Agent", "VSCandro")
+            conn.setRequestProperty("User-Agent", "VSCodroid Neo")
             if (have > 0) conn.setRequestProperty("Range", "bytes=$have-")
             val code = conn.responseCode
             if (code == 200 && have > 0) { part.delete(); have = 0L }
@@ -83,7 +83,7 @@ object UpdateDownloader {
             try {
                 c.connectTimeout = 15000
                 c.readTimeout = 15000
-                c.setRequestProperty("User-Agent", "VSCandro")
+                c.setRequestProperty("User-Agent", "VSCodroid Neo")
                 if (c.responseCode != 200) null
                 else c.inputStream.bufferedReader().use { it.readText() }.trim().split(Regex("\\s+")).firstOrNull()?.lowercase()
             } finally {

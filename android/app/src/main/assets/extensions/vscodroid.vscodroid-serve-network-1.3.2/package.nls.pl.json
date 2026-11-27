@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCandro Udostępnij w sieci",
+  "displayName": "VSCodroid Neo Udostępnij w sieci",
   "description": "Pokazuje adres, pod którym inne urządzenia dosięgną serwera deweloperskiego działającego na tym urządzeniu",
-  "command.serveOnNetwork": "VSCandro: Udostępnij w sieci"
+  "command.serveOnNetwork": "VSCodroid Neo: Udostępnij w sieci"
 }

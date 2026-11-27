@@ -23,7 +23,7 @@
       }
     ],
     "configuration": {
-      "title": "VSCandro",
+      "title": "VSCodroid Neo",
       "properties": {
         "vscodroid.server.heapCeilingMb": {
           "type": [

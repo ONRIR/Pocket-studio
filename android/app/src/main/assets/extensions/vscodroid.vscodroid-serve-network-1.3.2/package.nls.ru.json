@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCandro Открыть доступ по сети",
+  "displayName": "VSCodroid Neo Открыть доступ по сети",
   "description": "Показывает адрес, по которому другие устройства могут обратиться к серверу разработки на этом устройстве",
-  "command.serveOnNetwork": "VSCandro: Открыть доступ по сети"
+  "command.serveOnNetwork": "VSCodroid Neo: Открыть доступ по сети"
 }

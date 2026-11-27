@@ -12,6 +12,6 @@ changed=0
 for f in $files; do
   [ -f "$f" ] || continue
   # (?<!rmyndharis/) keeps links to the upstream repository as they are.
-  perl -pi -e 's/(?<!rmyndharis\/)VSCodroid/VSCandro/g' "$f"
+  perl -pi -e 's/(?<!rmyndharis\/)VSCodroid(?! Neo)/VSCodroid Neo/g' "$f"
 done
 git diff --stat | tail -1 || true

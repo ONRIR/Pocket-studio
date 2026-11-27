@@ -703,7 +703,7 @@ index 5c79a9b5..210c0a9c 100644
  		return {
  			text,
  			selectionStartOffset,
-@@ -503,8 +740,85 @@ export class NativeEditContext extends AbstractEditContext {
+@@ -503,8 +740,91 @@ export class NativeEditContext extends AbstractEditContext {
  		};
  	}
  
@@ -735,6 +735,12 @@ index 5c79a9b5..210c0a9c 100644
 +	// sends when its lines wrap anew, keeps it where it is: see _caretUnmoved.
 +	private _editContextStartAfter(reason: CursorChangeReason): Position {
 +		if (this._keepEditContextStart || this._deletingByKey) {
++			// EXPERIMENT (Backspace at the start of a line): the keyboard sees only the caret line, so at column 1 it has no
++			// text before the caret and stalls. For a Backspace key press, keep the line break above and that line in the buffer.
++			const caret = this._primarySelection;
++			if (isAndroid && this._deletingByKey && caret.isEmpty() && caret.startColumn === 1 && caret.startLineNumber > 1) {
++				return new Position(caret.startLineNumber - 1, 1);
++			}
 +			return this._editContextStart;
 +		}
 +		const selection = this._primarySelection;

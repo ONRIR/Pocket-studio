@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCandro Pubblica in rete",
+  "displayName": "VSCodroid Neo Pubblica in rete",
   "description": "Mostra l'indirizzo con cui altri dispositivi possono raggiungere un server di sviluppo in esecuzione su questo dispositivo",
-  "command.serveOnNetwork": "VSCandro: Pubblica in rete"
+  "command.serveOnNetwork": "VSCodroid Neo: Pubblica in rete"
 }

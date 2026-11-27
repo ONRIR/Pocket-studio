@@ -274,8 +274,8 @@ const CHILD_KILL_AFTER_SIGTERM_MS = 700;
 // is built from the port, and why it has to be is written beside it; nothing else
 // here depends on it, and the comment used to say that of the whole object.
 const productOverrides = {
-    nameShort: 'VSCandro',
-    nameLong: 'VSCandro',
+    nameShort: 'VSCodroid Neo',
+    nameLong: 'VSCodroid Neo',
     applicationName: 'vscodroid',
     dataFolderName: '.vscodroid',
     quality: 'stable',

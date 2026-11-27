@@ -993,7 +993,7 @@ def check(label, ok, detail=""):
 # product.json's own branding is checked by verify-server-tree.py, which runs on
 # both sides of the pivot. What is left here needs the branding directory, so it
 # can only run at build time.
-check("manifest.json is branded", manifest.get("name") == "VSCandro",
+check("manifest.json is branded", manifest.get("name") == "VSCodroid Neo",
       f"name = {manifest.get('name')!r}")
 
 # Locks the key set. A VS Code bump that adds, drops or renames a product.json
