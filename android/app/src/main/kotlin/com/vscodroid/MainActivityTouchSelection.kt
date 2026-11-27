@@ -370,6 +370,61 @@ internal fun MainActivity.injectTouchSelection() {
                 }
             }, true);
         })();
+
+            // Diagnostic strip. Three fingers down at once switch it on or off. It lists the last
+            // keys, input events and handle drags with the caret position, so a screenshot shows
+            // what the editor did. Off by default; nothing is recorded while it is off.
+            (function() {
+                var on = false, lines = [], box = null, t0 = Date.now();
+                function st() {
+                    var el = document.querySelector('.statusbar-item[id*="editor.selection"]') || document.getElementById('status.editor.selection');
+                    return el ? (el.innerText || '').replace(/\s+/g, ' ').trim() : '?';
+                }
+                function show() {
+                    if (!box) {
+                        box = document.createElement('div');
+                        box.style.cssText = 'position:fixed;left:0;right:0;top:0;z-index:2147483600;pointer-events:none;' +
+                            'background:rgba(0,0,0,.78);color:#9f9;font:10px/12px monospace;padding:2px 4px;white-space:pre;overflow:hidden;';
+                        document.body.appendChild(box);
+                    }
+                    box.style.display = on ? 'block' : 'none';
+                    box.textContent = lines.slice(-14).join('\n');
+                }
+                function log(m) {
+                    if (!on) return;
+                    lines.push(((Date.now() - t0) / 1000).toFixed(1) + ' ' + m + ' | ' + st());
+                    if (lines.length > 60) lines.shift();
+                    show();
+                }
+                function later(m) { if (on) setTimeout(function() { log(m + ' +300ms'); }, 300); }
+                window.addEventListener('touchstart', function(e) {
+                    if (e.touches.length === 3) {
+                        on = !on;
+                        lines = on ? ['diagnostic on'] : [];
+                        show();
+                        return;
+                    }
+                    if (!on) return;
+                    var h = e.target && e.target.style && e.target.style.zIndex === '2147483000';
+                    log(h ? 'handle touchstart' : 'touchstart');
+                }, true);
+                window.addEventListener('touchend', function(e) {
+                    if (!on) return;
+                    var h = e.target && e.target.style && e.target.style.zIndex === '2147483000';
+                    log(h ? 'handle touchend' : 'touchend');
+                    if (h) later('handle touchend');
+                }, true);
+                window.addEventListener('keydown', function(e) {
+                    if (e.key === 'Backspace' || e.key === 'Delete' || e.key === 'Unidentified') { log('keydown ' + e.key + ' rep=' + e.repeat + ' code=' + e.keyCode); later('keydown ' + e.key); }
+                }, true);
+                window.addEventListener('keyup', function(e) {
+                    if (e.key === 'Backspace' || e.key === 'Delete') log('keyup ' + e.key);
+                }, true);
+                window.addEventListener('beforeinput', function(e) {
+                    if (/^delete/.test(e.inputType || '')) { log('beforeinput ' + e.inputType); later('beforeinput'); }
+                }, true);
+                window.addEventListener('textupdate', function(e) { log('ctx textupdate'); }, true);
+            })();
         """.trimIndent(),
         null
     )
