@@ -250,7 +250,7 @@ internal suspend fun MainActivity.copyBugReport() {
         CrashReporter.generateBugReport(this@copyBugReport)
     }
     val clipboard = getSystemService(android.content.ClipboardManager::class.java)
-    val clip = android.content.ClipData.newPlainText("VSCodroid Bug Report", report)
+    val clip = android.content.ClipData.newPlainText("Pocket Studio Bug Report", report)
     // Marked sensitive before it goes anywhere, because of what this clip
     // holds: [CrashReporter.generateBugReport] gathers the last 200 lines of
     // server output and the text of the three most recent crash logs. Android

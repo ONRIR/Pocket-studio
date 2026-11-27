@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCodroid Меню редактора",
+  "displayName": "Pocket Studio Меню редактора",
   "description": "Дополнительные пункты контекстного меню редактора",
   "command.selectAll": "Выбрать все"
 }

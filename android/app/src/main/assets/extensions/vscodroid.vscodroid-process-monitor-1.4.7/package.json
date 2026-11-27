@@ -23,7 +23,7 @@
       }
     ],
     "configuration": {
-      "title": "VSCodroid",
+      "title": "Pocket Studio",
       "properties": {
         "vscodroid.server.heapCeilingMb": {
           "type": [

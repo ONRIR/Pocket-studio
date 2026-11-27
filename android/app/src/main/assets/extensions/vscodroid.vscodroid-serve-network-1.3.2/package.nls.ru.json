@@ -1,5 +1,5 @@
 {
-  "displayName": "VSCodroid Открыть доступ по сети",
+  "displayName": "Pocket Studio Открыть доступ по сети",
   "description": "Показывает адрес, по которому другие устройства могут обратиться к серверу разработки на этом устройстве",
-  "command.serveOnNetwork": "VSCodroid: Открыть доступ по сети"
+  "command.serveOnNetwork": "Pocket Studio: Открыть доступ по сети"
 }
