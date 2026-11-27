@@ -1,0 +1,107 @@
+name: Upstream sync
+
+# Once a week, looks for a new release of the upstream VSCodroid. If there is one, merges it into a
+# branch (sync/<tag>), puts the VSCandro name back on the text (scripts/rebrand.sh), and starts a
+# build of that branch. The build publishes a DRAFT release only: nothing reaches users until the
+# owner reads it and publishes it by hand. If the merge has conflicts, it opens an issue instead
+# and changes nothing.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+  pull-requests: write
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+      UPSTREAM_URL: https://github.com/rmyndharis/VSCodroid.git
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Is there a newer upstream release?
+        id: find
+        run: |
+          set -euo pipefail
+          latest=$(gh api repos/rmyndharis/VSCodroid/releases/latest --jq .tag_name)
+          base=$(tr -d '[:space:]' < UPSTREAM_VERSION)
+          echo "upstream latest: $latest, ours is based on: $base"
+          if [ "$latest" = "$base" ]; then echo "new=false" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if git ls-remote --exit-code --heads origin "sync/$latest" >/dev/null 2>&1; then
+            echo "A sync branch for $latest already exists."; echo "new=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "new=true" >> "$GITHUB_OUTPUT"
+          echo "tag=$latest" >> "$GITHUB_OUTPUT"
+
+      - name: Merge upstream into a sync branch
+        if: steps.find.outputs.new == 'true'
+        id: merge
+        env:
+          TAG: ${{ steps.find.outputs.tag }}
+        run: |
+          set -uo pipefail
+          git config user.name "VSCandro sync"
+          git config user.email "noreply@users.noreply.github.com"
+          git fetch --no-tags "$UPSTREAM_URL" "refs/tags/${TAG}:refs/tags/upstream-${TAG}"
+          git checkout -b "sync/${TAG}"
+          if git merge --no-edit -m "Merge upstream VSCodroid ${TAG}" "upstream-${TAG}"; then
+            echo "clean=true" >> "$GITHUB_OUTPUT"
+          else
+            git diff --name-only --diff-filter=U > /tmp/conflicts.txt
+            git merge --abort
+            echo "clean=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open an issue when the merge has conflicts
+        if: steps.find.outputs.new == 'true' && steps.merge.outputs.clean == 'false'
+        env:
+          TAG: ${{ steps.find.outputs.tag }}
+        run: |
+          title="Upstream VSCodroid ${TAG} does not merge cleanly"
+          if gh issue list --state open --search "\"${title}\" in:title" --json number --jq 'length' | grep -qv '^0$'; then exit 0; fi
+          {
+            echo "The weekly check found upstream VSCodroid ${TAG}, but merging it into main conflicts in these files:"
+            echo
+            sed 's/^/- /' /tmp/conflicts.txt
+            echo
+            echo "Nothing was changed. These need a manual merge."
+          } > /tmp/body.md
+          gh issue create --title "$title" --body-file /tmp/body.md
+
+      - name: Rebrand, record the new base, push, start the draft build
+        if: steps.find.outputs.new == 'true' && steps.merge.outputs.clean == 'true'
+        env:
+          TAG: ${{ steps.find.outputs.tag }}
+        run: |
+          set -euo pipefail
+          ./scripts/rebrand.sh
+          echo "$TAG" > UPSTREAM_VERSION
+          git add -A
+          git commit -m "Rebrand text after merging upstream VSCodroid ${TAG}" || true
+          git push origin "sync/${TAG}"
+          # A push made with the workflow's own token does not start other workflows, so the
+          # build is started explicitly. It publishes a draft release for this branch.
+          gh workflow run build.yml --ref "sync/${TAG}"
+          {
+            echo "Merged upstream VSCodroid ${TAG} into branch sync/${TAG} and started a build of it."
+            echo
+            echo "When the build finishes it leaves a DRAFT release (nothing is published). To use it:"
+            echo "read the draft's notes, test the APK, then publish the draft and merge sync/${TAG} into main."
+          } > /tmp/body.md
+          gh pr create --base main --head "sync/${TAG}" --title "Upstream VSCodroid ${TAG}" --body-file /tmp/body.md || true

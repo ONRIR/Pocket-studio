@@ -25,7 +25,7 @@
     <!-- Shown once the automatic restart budget is spent. Replaces the two
          strings above in the same notification, which then carries no Stop
          action because there is nothing left to stop. -->
-    <string name="notification_title_stopped">VSCodroid-Server beendet</string>
+    <string name="notification_title_stopped">VSCandro-Server beendet</string>
     <string name="notification_text_stopped">Der Server ist wiederholt abgestürzt. Bitte starten Sie die App neu.</string>
     <string name="extracting_message">Kerndateien werden entpackt…</string>
 

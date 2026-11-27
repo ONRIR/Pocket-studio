@@ -1,10 +1,10 @@
 {
   "displayName": "VSCandro Vítejte",
-  "description": "Uvítací průvodce VSCodroidem",
+  "description": "Uvítací průvodce VSCandroem",
   "config.layout.autoHideSideBar": "Zavře postranní panel, když otevřete soubor nebo terminál. Volba auto to zapne na telefonu, na výšku i na šířku, a vypne na tabletu. Volbou on nebo off si to tady můžete určit sami.",
   "command.welcome.open": "VSCandro: Otevřít uvítání",
   "command.welcome.toolsDismissed": "VSCandro: Dokončit krok s nástroji",
-  "walkthrough.title": "Začínáme s VSCodroidem",
+  "walkthrough.title": "Začínáme s VSCandroem",
   "walkthrough.description": "Připravte si mobilní vývojové prostředí",
   "walkthrough.theme.title": "Vyberte si motiv",
   "walkthrough.theme.description": "Vyberte si barevný motiv, který vám sedne.\n\n[Procházet barevné motivy](command:workbench.action.selectTheme)",
