@@ -139,7 +139,6 @@ internal fun MainActivity.injectTouchSelection() {
             function refresh() {
                 if (!document.body) return;
                 if (!hStart) { hStart = makeHandle('start'); hEnd = makeHandle('end'); }
-                if (sd && sd.mode === 'handle') return;
                 if (lastType !== 'touch') { hideHandles(); return; }
                 var editor = document.querySelector('.monaco-editor.focused');
                 var en = editor && ends(editor);
@@ -221,7 +220,7 @@ internal fun MainActivity.injectTouchSelection() {
             function startHandle(kind, e) {
                 e.preventDefault();
                 e.stopPropagation();
-                if (sd) return;
+                if (sd) stopDrag();
                 var editor = document.querySelector('.monaco-editor.focused');
                 var lines = editor && editor.querySelector('.lines-content');
                 var en = editor && ends(editor);
