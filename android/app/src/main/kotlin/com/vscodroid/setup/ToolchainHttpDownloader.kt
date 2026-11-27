@@ -273,6 +273,104 @@ internal class ToolchainHttpDownloader(private val manager: ToolchainManager) {
         }
     }
 
+    /** Where a build that carries a toolchain inside the APK keeps its ZIP (VSCandro bundled variant). */
+    fun bundledZipPath(packName: String) = "toolchains/$packName.zip"
+
+    fun hasBundledZip(packName: String): Boolean = try {
+        manager.context.assets.open(bundledZipPath(packName)).close()
+        true
+    } catch (e: IOException) {
+        false
+    }
+
+    /**
+     * Installs a toolchain from the ZIP that is inside this APK, with no network. Same unpack and
+     * install steps as [downloadViaHttp] after its download; the ZIP is checked against the
+     * publisher's digest when the release was built, so no download digest is needed here.
+     */
+    fun installFromBundledZip(packName: String, unpackedBytes: Long, zipBytes: Long) {
+        val download = synchronized(ToolchainManager.packOperationLock) {
+            if (packName in ToolchainManager.installsInFlight) null
+            else ToolchainManager.HttpDownload().takeIf { ToolchainManager.httpDownloads.putIfAbsent(packName, it) == null }
+        }
+        if (download == null) {
+            Logger.i(manager.tag, "An install of $packName is already outstanding; not starting another")
+            manager.reportState(packName, AssetPackStatus.UNKNOWN, 0)
+            return
+        }
+        manager.reportState(packName, AssetPackStatus.PENDING, 0, download.transferId)
+
+        manager.ioExecutor.execute {
+            val tempDir = toolchainTempDir(manager.context.cacheDir, packName)
+            val zipFile = File(tempDir, "$packName.zip")
+            val extractDir = File(tempDir, packName)
+            try {
+                val installed = recordedInstallSpace(
+                    toolchainShortName(packName),
+                    ToolchainRegistry.find(packName)?.displayName,
+                    unpackedBytes,
+                )
+                val requiredBytes = toolchainInstallBytes(unpackedBytes, zipBytes, installed)
+                val availableBytes = freeBytesFor(requiredBytes)
+                if (availableBytes < requiredBytes) {
+                    manager.failState(packName, ToolchainFailure.STORAGE, download.transferId)
+                    return@execute
+                }
+                tempDir.mkdirs()
+                manager.context.assets.open(bundledZipPath(packName)).use { input ->
+                    zipFile.outputStream().use { out ->
+                        val buf = ByteArray(256 * 1024)
+                        var copied = 0L
+                        while (true) {
+                            if (download.cancelled) return@execute
+                            val n = input.read(buf)
+                            if (n < 0) break
+                            out.write(buf, 0, n)
+                            copied += n
+                            val pct = if (zipBytes > 0) minOf(80L, copied * 80 / zipBytes).toInt() else 0
+                            if (pct != download.percent) {
+                                download.percent = pct
+                                manager.reportState(packName, AssetPackStatus.DOWNLOADING, pct, download.transferId)
+                            }
+                        }
+                    }
+                }
+                download.percent = 90
+                manager.reportState(packName, AssetPackStatus.TRANSFERRING, 90, download.transferId)
+                StorageManager.deleteRecursive(extractDir, manager.context.filesDir.parentFile)
+                if (extractDir.exists() || Files.isSymbolicLink(extractDir.toPath())) {
+                    manager.failState(packName, ToolchainFailure.STORAGE, download.transferId)
+                    return@execute
+                }
+                extractDir.mkdirs()
+                try {
+                    extractZip(zipFile, extractDir, isCancelled = { download.cancelled })
+                } catch (e: IOException) {
+                    if (!download.cancelled) {
+                        Logger.e(manager.tag, "Could not unpack the bundled $packName", e)
+                        manager.failState(packName, ToolchainFailure.STORAGE, download.transferId)
+                    }
+                    return@execute
+                }
+                zipFile.delete()
+                if (download.cancelled) return@execute
+                manager.installFromStaging(packName, extractDir, download.transferId)
+            } catch (e: SecurityException) {
+                Logger.e(manager.tag, "Zip security violation for the bundled $packName", e)
+                manager.failState(packName, ToolchainFailure.CORRUPT, download.transferId)
+            } catch (e: Exception) {
+                Logger.e(manager.tag, "Unexpected error installing the bundled $packName", e)
+                manager.failState(packName, ToolchainFailure.INTERNAL, download.transferId)
+            } finally {
+                val heldThePack = synchronized(download) { ToolchainManager.httpDownloads.remove(packName, download) }
+                StorageManager.deleteRecursive(tempDir, manager.context.filesDir.parentFile)
+                if (heldThePack && download.cancelled) {
+                    manager.reportState(packName, AssetPackStatus.CANCELED, 0, download.transferId)
+                }
+            }
+        }
+    }
+
     /**
      * Runs [attempt] up to MAX_RETRIES + 1 times with exponential backoff.
      * Does not retry [MissingFromRelease].

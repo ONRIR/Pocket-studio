@@ -333,6 +333,11 @@ class ToolchainManager(internal val context: Context) {
         // An explicit install supersedes any pending release or deferred removePack from an earlier uninstall.
         uninstaller.clearPackReleaseMarker(info.packName, dropPendingRelease = true)
 
+        if (shouldUseHttpFallback() && httpDownloader.hasBundledZip(info.packName)) {
+            // VSCandro bundled variant: the ZIP is inside this APK, so no network is needed.
+            httpDownloader.installFromBundledZip(info.packName, info.estimatedSize, info.downloadSize)
+            return
+        }
         if (shouldUseHttpFallback()) {
             val url = info.downloadUrl
             if (url == null) {
