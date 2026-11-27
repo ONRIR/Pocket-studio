@@ -75,9 +75,9 @@
                  null contentDescription, so lint has the answer to why there is none. -->
             <ImageView
                 android:id="@+id/appIcon"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:src="@mipmap/ic_launcher"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@mipmap/ic_launcher_foreground"
                 android:importantForAccessibility="no"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@+id/appName"

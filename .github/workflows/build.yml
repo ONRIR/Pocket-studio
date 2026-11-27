@@ -7,6 +7,11 @@ on:
     branches: [main]
   # Started by the upstream sync for its branch; publishes a draft release only.
   workflow_dispatch:
+    inputs:
+      replace_tag:
+        description: "Rebuild and put the files into this existing release (for example build-10) instead of making a new one. Keeps that build's number."
+        required: false
+        default: ""
 
 concurrency:
   group: build-${{ github.ref }}
@@ -49,6 +54,15 @@ jobs:
           # it has moved between major versions and this setting is right whatever
           # the location is.
           persist-credentials: false
+
+      - name: Keep the build number of the release being replaced
+        if: inputs.replace_tag != ''
+        env:
+          REPLACE_TAG: ${{ inputs.replace_tag }}
+        run: |
+          set -euo pipefail
+          echo "$REPLACE_TAG" | grep -Eq '^build-[0-9]+$'
+          echo "BUILD_NUMBER_OVERRIDE=${REPLACE_TAG#build-}" >> "$GITHUB_ENV"
 
       - name: Set up JDK 17
         uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
@@ -471,6 +485,7 @@ jobs:
       - name: Publish to a GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
+          REPLACE_TAG: ${{ inputs.replace_tag }}
         run: |
           cp android/app/build/outputs/apk/debug/app-debug.apk VSCandro-debug.apk
           sha256sum VSCandro-debug.apk | tee VSCandro-debug.apk.sha256
@@ -479,6 +494,8 @@ jobs:
             gh release create "$tag" VSCandro-debug.apk VSCandro-debug.apk.sha256 \
               --title "VSCandro build $GITHUB_RUN_NUMBER" \
               --notes "$(git log -1 --format=%B "$GITHUB_SHA" | head -c 1500)" --target "$GITHUB_SHA"
+          elif [ -n "${REPLACE_TAG:-}" ]; then
+            gh release upload "$REPLACE_TAG" VSCandro-debug.apk VSCandro-debug.apk.sha256 --clobber
           else
             # A pull request or a branch started by the upstream sync: a DRAFT, visible only to the
             # owner. The tag is not build-N, so the in-app Updates screen never offers it.
@@ -493,9 +510,10 @@ jobs:
       # signing key, so either release installs over the other and keeps the user's data. Tagged
       # build-N-cpp, which the in-app Updates screen ignores (it lists build-N tags only).
       - name: Build and publish the variant with C/C++ inside
-        if: github.event_name == 'push'
+        if: github.event_name == 'push' || inputs.replace_tag != ''
         env:
           GH_TOKEN: ${{ github.token }}
+          REPLACE_TAG: ${{ inputs.replace_tag }}
         run: |
           set -euo pipefail
           ver=$(sed -n 's/^ *versionName = "\(.*\)"/\1/p' android/app/build.gradle.kts | head -1)
@@ -510,6 +528,10 @@ jobs:
           (cd android && ./gradlew assembleDebug)
           cp android/app/build/outputs/apk/debug/app-debug.apk VSCandro-cpp-debug.apk
           sha256sum VSCandro-cpp-debug.apk | tee VSCandro-cpp-debug.apk.sha256
+          if [ -n "${REPLACE_TAG:-}" ]; then
+            gh release upload "${REPLACE_TAG}-cpp" VSCandro-cpp-debug.apk VSCandro-cpp-debug.apk.sha256 --clobber
+            exit 0
+          fi
           gh release create "build-${GITHUB_RUN_NUMBER}-cpp" VSCandro-cpp-debug.apk VSCandro-cpp-debug.apk.sha256 \
             --title "VSCandro build $GITHUB_RUN_NUMBER with C/C++ inside" \
             --notes "Same as build $GITHUB_RUN_NUMBER, plus the C/C++ toolchain (clang, from upstream VSCodroid v${ver}, SHA-256 checked) inside the APK. Open Toolchains and install C/C++ with no download. About 80 MB bigger." --target "$GITHUB_SHA"
