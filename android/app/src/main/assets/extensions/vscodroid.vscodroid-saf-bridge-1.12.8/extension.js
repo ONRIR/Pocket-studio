@@ -1051,7 +1051,9 @@ function activate(context) {
 
         // Unknown (undefined) counts as installed: a record that cannot be read is no
         // reason to refuse, and the shell says plainly when a program is missing.
-        const installed = runner.toolchain && await installedToolchains(context);
+        // C and C++ are not checked: the compiler may be present without the record listing it (the build
+        // with C/C++ inside the APK), and a missing compiler shows as a plain error in the console.
+        const installed = runner.toolchain && runner.toolchain !== 'cpp' && await installedToolchains(context);
         if (superseded()) return;
         if (installed && !installed.includes(runner.toolchain)) {
             const manage = vscode.l10n.t('Manage Toolchains');

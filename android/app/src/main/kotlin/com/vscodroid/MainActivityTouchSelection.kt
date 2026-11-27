@@ -177,12 +177,45 @@ internal fun MainActivity.injectTouchSelection() {
                 if (side < 0) dispatchOn(sd.lines, '-monaco-gesturetap', w.ex - 1, w.eMid, 1);
                 else dispatchOn(sd.lines, '-monaco-gesturetap', w.sx + 1, w.sMid, 1);
             }
+            // Extends the selection to a point the way a shift-click does. The editor's own pen drag
+            // did not follow short drags downwards on a phone; a shift-click always moves the end.
+            function shiftClick(lines, x, y) {
+                var el = null, stack = document.elementsFromPoint(x, y);
+                for (var i = 0; i < stack.length; i++) {
+                    if (lines.contains(stack[i])) { el = stack[i]; break; }
+                }
+                if (!el) {
+                    var vl = lines.querySelector('.view-lines');
+                    if (!vl) return;
+                    var r = vl.getBoundingClientRect();
+                    x = clamp(x, r.left + 1, r.right - 1);
+                    y = clamp(y, r.top + 1, r.bottom - 1);
+                    stack = document.elementsFromPoint(x, y);
+                    for (var j = 0; j < stack.length; j++) {
+                        if (lines.contains(stack[j])) { el = stack[j]; break; }
+                    }
+                    if (!el) return;
+                }
+                try {
+                    var o = { bubbles: true, cancelable: true, clientX: x, clientY: y, screenX: x, screenY: y,
+                              button: 0, buttons: 1, shiftKey: true, pointerType: 'mouse', pointerId: 4243,
+                              isPrimary: true, view: window };
+                    var down = new PointerEvent('pointerdown', o);
+                    down.__pocket = true;
+                    el.dispatchEvent(down);
+                    var up = new PointerEvent('pointerup', { bubbles: true, cancelable: true, clientX: x, clientY: y,
+                              screenX: x, screenY: y, button: 0, buttons: 0, shiftKey: true, pointerType: 'mouse',
+                              pointerId: 4243, isPrimary: true, view: window });
+                    up.__pocket = true;
+                    window.dispatchEvent(up);
+                    el.dispatchEvent(up);
+                } catch (err) {}
+            }
             function extend() {
                 if (!sd) return;
                 reanchor();
-                if (!sd.pen) { penMode(sd.lines, true); sd.pen = true; }
                 var at = aimAt();
-                dispatchOn(sd.lines, '-monaco-gesturechange', at.x, at.y, 1);
+                shiftClick(sd.lines, at.x, at.y);
             }
             function edgeStep(pos, lo, hi) {
                 if (pos < lo + EDGE) return -EDGE_SPEED * Math.min(1, (lo + EDGE - pos) / EDGE);
